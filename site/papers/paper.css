@@ -1,0 +1,84 @@
+/* CLARK working papers — raw research-stage markdown register.
+   HTML for legibility; styled to read like the .md file it mirrors. */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --paper: #f8f4e9;
+  --ink: #1c1915;
+  --ink-soft: #4a443b;
+  --ink-faint: #8a8274;
+  --accent: #c8480a;
+  --accent-deep: #9a3708;
+  --rule: #d8d0bd;
+  --rule-dark: #b9af97;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink-soft);
+  font: 400 0.875rem/1.8 "IBM Plex Mono", "SF Mono", Menlo, monospace;
+  padding: 3rem 1.6rem 6rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.doc { max-width: 82ch; margin: 0 auto; }
+
+h1, h2, h3 { color: var(--ink); font-weight: 600; line-height: 1.45; }
+h1 { font-size: 1.05rem; margin-bottom: 1.4rem; }
+h2 { font-size: 0.95rem; margin: 2.6rem 0 1rem; }
+h3 { font-size: 0.875rem; margin: 2rem 0 0.8rem; }
+h1::before { content: "# ";   color: var(--accent); }
+h2::before { content: "## ";  color: var(--accent); }
+h3::before { content: "### "; color: var(--accent); }
+
+p { margin-bottom: 1.1rem; }
+strong { color: var(--ink); font-weight: 600; }
+a { color: var(--accent-deep); text-underline-offset: 3px; }
+
+hr { border: none; margin: 2.1rem 0; }
+hr::before { content: "---"; display: block; color: var(--ink-faint); }
+
+ul, ol { margin: 0 0 1.1rem; padding-left: 1.7rem; }
+li { margin-bottom: 0.35rem; }
+ul li::marker { content: "-  "; color: var(--accent); }
+ol li::marker { color: var(--accent); }
+
+table { border-collapse: collapse; margin: 0 0 1.4rem; width: 100%; }
+th, td {
+  border: 1px solid var(--rule-dark);
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+th { color: var(--ink); font-weight: 600; background: rgba(185, 175, 151, 0.18); }
+
+code {
+  background: rgba(185, 175, 151, 0.22);
+  padding: 0.05em 0.35em;
+  font-size: 0.82rem;
+}
+
+/* front-matter block — the bit between the --- fences in the raw file */
+.frontmatter {
+  border-top: 1px solid var(--rule-dark);
+  border-bottom: 1px solid var(--rule-dark);
+  padding: 0.9rem 0;
+  margin-bottom: 1.4rem;
+  color: var(--ink-faint);
+  font-size: 0.8rem;
+  line-height: 1.75;
+}
+.frontmatter strong { color: var(--ink-soft); }
+
+.doc-foot {
+  margin-top: 3.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+.doc-foot a { color: var(--ink-faint); }
