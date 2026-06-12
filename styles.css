@@ -204,6 +204,55 @@ a:hover { color: var(--accent); }
 }
 .section-index a.active .idx { color: var(--accent); }
 
+/* ---- figures: interlaid field imagery, dossier register ---- */
+
+.figure {
+  margin: 2.4rem 0;
+  padding: 0.6rem;
+  border: 1px solid var(--rule-dark);
+  background: rgba(255, 253, 247, 0.55);
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: saturate(0.82) contrast(1.03);
+}
+
+.figure figcaption {
+  padding: 0.65rem 0.2rem 0.1rem;
+  font-size: 0.68rem;
+  line-height: 1.65;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+}
+
+.figure .fig-credit {
+  color: var(--ink-faint);
+  display: block;
+  margin-top: 0.15rem;
+}
+
+.figure-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+.figure-pair .fig-cell { min-width: 0; }
+.figure-pair .fig-cell img { height: 100%; object-fit: cover; }
+.figure-pair figcaption { grid-column: 1 / -1; }
+
+.figure-wide {
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+}
+
+@media (max-width: 720px) {
+  .figure-pair { grid-template-columns: 1fr; }
+  .figure-wide { margin-left: 0; margin-right: 0; }
+}
+
 /* ---- left rail: working papers (beneath the spine) ---- */
 
 .papers-block {
