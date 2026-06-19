@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claims Register | Clark</title>
+  <meta name="description" content="The full Clark claims register: every claim, every status, every source.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="claims">
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark"><img src="images/clark-c.jpg" alt="Clark logo"></div>
+        <div>
+          <div class="site-title">CLARK</div>
+          <small>Full claims register</small>
+        </div>
+      </div>
+      <div class="meta">
+        <span>Safe</span>
+        <span>Provisional</span>
+        <span>Rejected</span>
+      </div>
+    </header>
+
+    <nav class="nav" aria-label="Main">
+      <a data-nav-page="home" href="index.html">Home</a>
+      <a data-nav-page="why" href="why-clark.html">Why Clark</a>
+      <a data-nav-page="method" href="method.html">Learning &amp; Working</a>
+      <a data-nav-page="node" href="node-one.html">Niagara Assembly Centre</a>
+      <a data-nav-page="evidence" href="evidence.html">Evidence</a>
+      <a data-nav-page="library" href="docs/index.html">Library</a>
+      <a data-nav-page="participate" href="participate.html">Participate</a>
+    </nav>
+
+    <main>
+      <section class="section">
+        <div class="eyebrow"><a href="claims.html">Back to Claims</a></div>
+        <h2>Full claims register</h2>
+        <p class="lead">Every claim registered in the Clark corpus, with status and evidence basis.</p>
+      </section>
+
+      <!-- FILTERS -->
+      <section class="section">
+        <h2>Filter by status</h2>
+        <div class="log-filter-bar" id="archive-status-filters">
+          <button class="log-filter-btn active" data-status="all">All</button>
+          <button class="log-filter-btn" data-status="safe">Safe</button>
+          <button class="log-filter-btn" data-status="provisional">Provisional</button>
+          <button class="log-filter-btn" data-status="rejected">Rejected</button>
+        </div>
+        <h2 style="margin-top:20px">Filter by claim type</h2>
+        <div class="claim-type-bar" id="archive-type-filters"></div>
+      </section>
+
+      <section class="section">
+        <div id="archive-claims-feed"></div>
+      </section>
+    </main>
+  </div>
+  <script src="claims-data.js"></script>
+  <script>
+  (function() {
+    function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+    function typeLabel(t) { return t.replace(/-/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); }); }
+
+    if (typeof CLARK_CLAIMS === "undefined") return;
+
+    var claims = CLARK_CLAIMS.slice();
+    var types = typeof CLAIM_TYPES !== "undefined" ? CLAIM_TYPES : [];
+    var activeStatus = "all";
+    var activeTypes = [];
+
+    var feedEl = document.getElementById("archive-claims-feed");
+    var statusBar = document.getElementById("archive-status-filters");
+    var typeBar = document.getElementById("archive-type-filters");
+
+    // Type filter toggles
+    typeBar.innerHTML = types.map(function(t) {
+      return '<button class="claim-type-toggle" data-type="' + esc(t) + '">' + esc(typeLabel(t)) + '</button>';
+    }).join("");
+
+    typeBar.addEventListener("click", function(e) {
+      var btn = e.target.closest(".claim-type-toggle");
+      if (!btn) return;
+      var t = btn.getAttribute("data-type");
+      btn.classList.toggle("selected");
+      if (btn.classList.contains("selected")) {
+        activeTypes.push(t);
+      } else {
+        activeTypes = activeTypes.filter(function(x) { return x !== t; });
+      }
+      render();
+    });
+
+    // Status filter
+    statusBar.addEventListener("click", function(e) {
+      var btn = e.target.closest(".log-filter-btn");
+      if (!btn) return;
+      activeStatus = btn.getAttribute("data-status");
+      statusBar.querySelectorAll(".log-filter-btn").forEach(function(b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      render();
+    });
+
+    function filtered() {
+      return claims.filter(function(c) {
+        if (activeStatus !== "all" && c.status !== activeStatus) return false;
+        if (activeTypes.length > 0) {
+          var match = false;
+          (c.types || []).forEach(function(t) { if (activeTypes.indexOf(t) !== -1) match = true; });
+          if (!match) return false;
+        }
+        return true;
+      });
+    }
+
+    function render() {
+      var list = filtered();
+      if (list.length === 0) {
+        feedEl.innerHTML = '<p style="color:var(--faint)">No claims match the current filters.</p>';
+        return;
+      }
+      feedEl.innerHTML = list.map(function(c, i) {
+        var location = [c.town, c.region].filter(Boolean).join(", ");
+        return '<div class="claim-entry" data-idx="' + i + '">' +
+          '<div class="claim-entry-head">' +
+            '<span class="claim-status-badge ' + esc(c.status) + '">' + esc(c.status) + '</span>' +
+            '<span class="log-date">' + esc(c.date) + '</span>' +
+            (location ? '<span style="color:var(--faint);font-size:0.82rem">' + esc(location) + '</span>' : '') +
+            (c.initiative ? '<span class="log-initiative-badge">' + esc(c.initiative) + '</span>' : '') +
+            (c.strategic ? '<span class="log-initiative-badge" style="background:var(--accent-2);color:#fff">' + esc(c.strategic) + '</span>' : '') +
+          '</div>' +
+          '<p class="claim-entry-text">' + esc(c.text) + '</p>' +
+          '<div class="claim-types">' +
+            (c.types || []).map(function(t) { return '<span class="claim-type-chip">' + esc(typeLabel(t)) + '</span>'; }).join("") +
+          '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    // Click to expand overlay
+    feedEl.addEventListener("click", function(e) {
+      var entry = e.target.closest(".claim-entry");
+      if (!entry) return;
+      var idx = parseInt(entry.getAttribute("data-idx"), 10);
+      var list = filtered();
+      var claim = list[idx];
+      if (!claim) return;
+
+      var overlay = document.createElement("div");
+      overlay.className = "md-overlay";
+      overlay.innerHTML =
+        '<div class="md-overlay-panel">' +
+          '<div class="md-overlay-head"><span>Claim</span><button class="md-overlay-close">&times;</button></div>' +
+          '<div class="md-overlay-body"></div>' +
+        '</div>';
+      var body = overlay.querySelector(".md-overlay-body");
+      var location = [claim.town, claim.region].filter(Boolean).join(", ");
+      body.innerHTML =
+        '<div class="log-meta">' +
+          '<div class="log-meta-item"><strong>Date</strong>' + esc(claim.date) + '</div>' +
+          '<div class="log-meta-item"><strong>Status</strong><span class="claim-status-badge ' + esc(claim.status) + '">' + esc(claim.status) + '</span></div>' +
+          (claim.town ? '<div class="log-meta-item"><strong>Town</strong>' + esc(claim.town) + '</div>' : '') +
+          (claim.region ? '<div class="log-meta-item"><strong>Region</strong>' + esc(claim.region) + '</div>' : '') +
+          (claim.initiative ? '<div class="log-meta-item"><strong>Initiative</strong>' + esc(claim.initiative) + '</div>' : '') +
+          (claim.strategic ? '<div class="log-meta-item"><strong>Strategic</strong>' + esc(claim.strategic) + '</div>' : '') +
+        '</div>' +
+        '<p style="font-size:1.1rem;color:var(--ink);margin-bottom:18px">' + esc(claim.text) + '</p>' +
+        (claim.source ? '<p style="color:var(--faint);font-size:0.88rem"><strong style="color:var(--accent-3);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:4px">Evidence basis</strong>' + esc(claim.source) + '</p>' : '') +
+        '<div class="claim-types" style="margin-top:14px">' +
+          (claim.types || []).map(function(t) { return '<span class="claim-type-chip">' + esc(typeLabel(t)) + '</span>'; }).join("") +
+        '</div>';
+      // Annotations (local only, uses helpers from app.js)
+      if (window._clarkAnn && window._clarkAnn.isLocal) {
+        var aKey = window._clarkAnn.key("claim-" + claim.text);
+        body.insertAdjacentHTML("beforeend", window._clarkAnn.render(aKey));
+        window._clarkAnn.wire(overlay, aKey);
+      }
+      overlay.querySelector(".md-overlay-close").addEventListener("click", function() { overlay.remove(); });
+      overlay.addEventListener("click", function(ev) { if (ev.target === overlay) overlay.remove(); });
+      document.body.appendChild(overlay);
+    });
+
+    render();
+  })();
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

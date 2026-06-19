@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archive | Clark</title>
+  <meta name="description" content="Full archive of Clark updates, posts, and log entries.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="updates">
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark"><img src="images/clark-c.jpg" alt="Clark logo"></div>
+        <div>
+          <div class="site-title">CLARK</div>
+          <small>Archive</small>
+        </div>
+      </div>
+      <div class="meta">
+        <span>Full record</span>
+      </div>
+    </header>
+
+    <nav class="nav" aria-label="Main">
+      <a data-nav-page="home" href="index.html">Home</a>
+      <a data-nav-page="why" href="why-clark.html">Why Clark</a>
+      <a data-nav-page="method" href="method.html">Learning &amp; Working</a>
+      <a data-nav-page="node" href="node-one.html">Niagara Assembly Centre</a>
+      <a data-nav-page="evidence" href="evidence.html">Evidence</a>
+      <a data-nav-page="library" href="docs/index.html">Library</a>
+      <a data-nav-page="participate" href="participate.html">Participate</a>
+    </nav>
+
+    <main>
+      <section class="section">
+        <div class="eyebrow"><a href="updates.html">Back to Updates</a></div>
+        <h2>Archive</h2>
+        <p class="lead">The full history of log entries and posts, oldest to newest.</p>
+      </section>
+
+      <section class="section">
+        <h2>All log entries</h2>
+        <div id="archive-log" class="log-feed"></div>
+      </section>
+
+      <section class="section">
+        <h2>All posts</h2>
+        <div id="archive-posts" class="grid two"></div>
+      </section>
+    </main>
+  </div>
+  <script src="updates-data.js"></script>
+  <script>
+  (function() {
+    function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+    var logEl = document.getElementById("archive-log");
+    var postsEl = document.getElementById("archive-posts");
+
+    if (typeof CLARK_LOG !== "undefined") {
+      logEl.innerHTML = CLARK_LOG.map(function(e, i) {
+        return '<div class="log-entry" data-log-idx="' + i + '">' +
+          '<span class="log-date">' + esc(e.date) + '</span>' +
+          '<span class="log-badges">' +
+            '<span class="log-type-badge ' + esc(e.type) + '">' + esc(e.type) + '</span>' +
+            (e.initiative ? '<span class="log-initiative-badge">' + esc(e.initiative) + '</span>' : '') +
+          '</span>' +
+          '<span class="log-text">' + esc(e.text) + '</span>' +
+        '</div>';
+      }).join("");
+
+      logEl.addEventListener("click", function(ev) {
+        var row = ev.target.closest(".log-entry");
+        if (!row) return;
+        var idx = parseInt(row.getAttribute("data-log-idx"), 10);
+        var entry = CLARK_LOG[idx];
+        if (!entry) return;
+        var html =
+          '<div class="log-overlay-meta">' +
+            '<div class="log-meta-item"><strong>Date</strong>' + esc(entry.date) + '</div>' +
+            '<div class="log-meta-item"><strong>Type</strong>' + esc(entry.type) + '</div>' +
+            (entry.initiative ? '<div class="log-meta-item"><strong>Initiative</strong>' + esc(entry.initiative) + '</div>' : '') +
+            (entry.strategic ? '<div class="log-meta-item"><strong>Strategic</strong>' + esc(entry.strategic) + '</div>' : '') +
+          '</div>' +
+          '<p style="font-size:1.1rem;color:var(--ink)">' + esc(entry.text) + '</p>';
+        var overlay = document.createElement("div");
+        overlay.className = "md-overlay";
+        overlay.innerHTML =
+          '<div class="md-overlay-panel">' +
+            '<div class="md-overlay-head"><span>Log entry</span><button class="md-overlay-close">&times;</button></div>' +
+            '<div class="md-overlay-body">' + html + '</div>' +
+          '</div>';
+        if (window._clarkAnn && window._clarkAnn.isLocal) {
+          var aKey = window._clarkAnn.key("log-" + entry.text);
+          overlay.querySelector(".md-overlay-body").insertAdjacentHTML("beforeend", window._clarkAnn.render(aKey));
+          window._clarkAnn.wire(overlay, aKey);
+        }
+        overlay.querySelector(".md-overlay-close").addEventListener("click", function() { overlay.remove(); });
+        overlay.addEventListener("click", function(e) { if (e.target === overlay) overlay.remove(); });
+        document.body.appendChild(overlay);
+      });
+    }
+
+    if (typeof CLARK_POSTS !== "undefined") {
+      postsEl.innerHTML = CLARK_POSTS.map(function(p, i) {
+        return '<article class="card" data-post-idx="' + i + '" style="cursor:pointer">' +
+          '<div class="kicker">' + esc(p.date) +
+            (p.initiative ? ' <span class="log-initiative-badge">' + esc(p.initiative) + '</span>' : '') +
+          '</div>' +
+          '<h3>' + esc(p.title) + '</h3>' +
+          '<p>' + esc(p.body) + '</p>' +
+          '<div class="taglist">' +
+            (p.tags || []).map(function(t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("") +
+          '</div>' +
+        '</article>';
+      }).join("");
+
+      postsEl.addEventListener("click", function(ev) {
+        var card = ev.target.closest("[data-post-idx]");
+        if (!card) return;
+        var idx = parseInt(card.getAttribute("data-post-idx"), 10);
+        var post = CLARK_POSTS[idx];
+        if (!post) return;
+        var html =
+          '<div class="log-overlay-meta">' +
+            '<div class="log-meta-item"><strong>Date</strong>' + esc(post.date) + '</div>' +
+            (post.initiative ? '<div class="log-meta-item"><strong>Initiative</strong>' + esc(post.initiative) + '</div>' : '') +
+            (post.strategic ? '<div class="log-meta-item"><strong>Strategic</strong>' + esc(post.strategic) + '</div>' : '') +
+          '</div>' +
+          '<h1>' + esc(post.title) + '</h1>' +
+          '<p>' + esc(post.body) + '</p>' +
+          '<div class="taglist" style="margin-top:18px">' +
+            (post.tags || []).map(function(t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("") +
+          '</div>';
+        var overlay = document.createElement("div");
+        overlay.className = "md-overlay";
+        overlay.innerHTML =
+          '<div class="md-overlay-panel">' +
+            '<div class="md-overlay-head"><span>' + esc(post.title) + '</span><button class="md-overlay-close">&times;</button></div>' +
+            '<div class="md-overlay-body">' + html + '</div>' +
+          '</div>';
+        if (window._clarkAnn && window._clarkAnn.isLocal) {
+          var aKey = window._clarkAnn.key("post-" + post.title);
+          overlay.querySelector(".md-overlay-body").insertAdjacentHTML("beforeend", window._clarkAnn.render(aKey));
+          window._clarkAnn.wire(overlay, aKey);
+        }
+        overlay.querySelector(".md-overlay-close").addEventListener("click", function() { overlay.remove(); });
+        overlay.addEventListener("click", function(e) { if (e.target === overlay) overlay.remove(); });
+        document.body.appendChild(overlay);
+      });
+    }
+  })();
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

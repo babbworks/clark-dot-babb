@@ -1,0 +1,393 @@
+var CLAIM_TYPES = [
+  "workforce",
+  "production-capacity",
+  "transportation",
+  "capital",
+  "training",
+  "market",
+  "infrastructure",
+  "institutional",
+  "supply-chain",
+  "competitive-position",
+  "regulatory",
+  "demographics"
+];
+
+var CLAIM_STATUSES = ["safe", "provisional", "rejected"];
+
+var CLARK_CLAIMS = [
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["workforce", "training"],
+    town: "Hamilton",
+    region: "Southern Ontario",
+    initiative: "clark",
+    strategic: "workforce-pipeline",
+    text: "McMaster University and Mohawk College produce a steady pipeline of engineering and skilled trades graduates with direct relevance to electronics assembly and firmware work.",
+    source: "Public enrollment data, institutional program listings"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["institutional", "training"],
+    town: "Hamilton",
+    region: "Southern Ontario",
+    initiative: "clark",
+    strategic: "training-partnership",
+    text: "Mohawk College operates IPC-certified training programmes and has institutional infrastructure for curriculum partnership.",
+    source: "Mohawk College program catalogue, IPC training centre directory"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["institutional"],
+    town: "Hamilton",
+    region: "Southern Ontario",
+    initiative: "clark",
+    strategic: "research-alignment",
+    text: "McMaster Engineering highlights advanced manufacturing, embedded/interconnected systems, microelectronics and VLSI, and the McMaster Manufacturing Research Institute as active research areas.",
+    source: "McMaster University official program documentation"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["production-capacity", "infrastructure"],
+    town: "Hamilton",
+    region: "Southern Ontario",
+    initiative: "clark",
+    strategic: "site-search",
+    text: "The Hamilton region has sufficient idle or underutilised light-industrial floor space to support at least one electronics assembly centre without new construction.",
+    source: "Commercial real estate listings, field observation"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["transportation", "infrastructure"],
+    town: "Niagara",
+    region: "Hamilton-Buffalo corridor",
+    initiative: "clark",
+    strategic: "corridor-logistics",
+    text: "Peace Bridge and Queenston-Lewiston crossings provide daily commercial freight capacity sufficient for small-batch electronics logistics between Hamilton and Buffalo.",
+    source: "CBSA traffic data, public bridge authority reports"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["transportation"],
+    town: "Niagara",
+    region: "Hamilton-Buffalo corridor",
+    initiative: "",
+    strategic: "corridor-logistics",
+    text: "New York's freight plan identifies the Peace Bridge as the state's highest-volume commercial border crossing in 2022.",
+    source: "NYSDOT Freight Plan 2024"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["transportation", "demographics"],
+    town: "Buffalo",
+    region: "Buffalo-Niagara",
+    initiative: "",
+    strategic: "corridor-logistics",
+    text: "More than $88B in goods crosses the Buffalo-Niagara Falls freight gateway annually — the fourth largest U.S.-Canada crossing.",
+    source: "Official regional economic development data"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["competitive-position", "transportation"],
+    town: "Buffalo",
+    region: "Hamilton-Buffalo corridor",
+    initiative: "",
+    strategic: "corridor-validation",
+    text: "Artaflex opened a Buffalo, NY facility in January 2024, citing growing US demand and desire to serve clients closer to their operations — directly validating the binational corridor thesis from a competitor's investment decision.",
+    source: "Artaflex press release, company statements"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["market", "competitive-position"],
+    town: "",
+    region: "Southern Ontario",
+    initiative: "clark",
+    strategic: "market-gap",
+    text: "There is no publicly visible, dedicated small-batch electronics assembly training centre operating in the Hamilton-Niagara region.",
+    source: "Industry directory search, field research"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["market", "training"],
+    town: "",
+    region: "Southern Ontario",
+    initiative: "clark",
+    strategic: "training-market",
+    text: "The IPC training market in Ontario is underserved — only Cygnus Electronics and CE3 Electronics explicitly confirm IPC-certified workforces in public materials, while EPTAC Markham is the only active IPC Licensed Training Center in the Hamilton-to-Toronto corridor.",
+    source: "Industry directory search, company websites, IPC training centre directory"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["market"],
+    town: "",
+    region: "North America",
+    initiative: "clark",
+    strategic: "beachhead",
+    text: "The strongest first-pass beachhead segment is industrial controls, smart-energy hardware, sensor modules, and related rugged instrumentation requiring low-volume or high-mix PCB assembly with engineering-adjacent support.",
+    source: "Market research on Jabil, Celestica, and Acorn Assembly positioning"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["competitive-position"],
+    town: "",
+    region: "North America",
+    initiative: "clark",
+    strategic: "differentiation",
+    text: "No identified competitor combines assembly, firmware optimization, and IPC-certified training in a multi-node platform model.",
+    source: "Overlap mapping of MacroFab, STI Electronics, Conclusive Engineering, EPTAC — no full combination identified"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["capital"],
+    town: "",
+    region: "Canada",
+    initiative: "",
+    strategic: "Canada",
+    text: "SR&ED tax incentives are available where a business carries on business and conducts SR&ED in Canada, including Canadian-controlled private corporations.",
+    source: "CRA official program guidance"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["capital"],
+    town: "",
+    region: "Canada",
+    initiative: "",
+    strategic: "Canada",
+    text: "NRC IRAP is available for incorporated, profit-oriented Canadian SMEs with 500 or fewer FTEs pursuing commercialization of technology-driven innovation.",
+    source: "NRC IRAP official program guidance"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["capital"],
+    town: "Hamilton",
+    region: "Southern Ontario",
+    initiative: "",
+    strategic: "",
+    text: "FedDev Ontario funds businesses and organizations across southern Ontario, explicitly including Hamilton and Waterloo in its service area.",
+    source: "FedDev Ontario official regional agency guidance"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["capital", "infrastructure"],
+    town: "Buffalo",
+    region: "Buffalo-Niagara",
+    initiative: "",
+    strategic: "",
+    text: "Western New York Hydropower is available to eligible businesses within 30 miles of the Niagara Power Project and programs support job retention, creation, and capital investment.",
+    source: "NYPA official utility/economic development guidance"
+  },
+  {
+    date: "2026-06-19",
+    status: "rejected",
+    types: ["capital"],
+    town: "",
+    region: "Canada",
+    initiative: "clark",
+    strategic: "Canada",
+    text: "Federal SR&ED credits alone can fund the first year of Clark operations without external investment.",
+    source: "Financial model review — SR&ED timing and eligibility constraints make this unreliable as sole funding"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["capital", "regulatory"],
+    town: "Buffalo",
+    region: "New York",
+    initiative: "",
+    strategic: "",
+    text: "Empire State Development confirms START-UP NY Program is closed to new applicants as of January 1, 2026.",
+    source: "Empire State Development official state program guidance"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["production-capacity"],
+    town: "Victor",
+    region: "Rochester",
+    initiative: "",
+    strategic: "",
+    text: "REDCOM EMS operates from a 140,000 sq ft campus with recent capacity upgrades via ESD grant for higher-capacity circuit board printing and component assembly.",
+    source: "Company documentation, ESD grant records"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["production-capacity", "regulatory"],
+    town: "Newark",
+    region: "Rochester",
+    initiative: "",
+    strategic: "",
+    text: "Creation Technologies (formerly IEC Electronics) operates 150,000 sq ft at Newark and 86,000 sq ft at Rochester, serving medical and aerospace/defense with DoD $45M+ contract for secured communications equipment.",
+    source: "Company documentation, press releases"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["production-capacity", "institutional"],
+    town: "Endicott",
+    region: "Binghamton",
+    initiative: "",
+    strategic: "",
+    text: "Endicott Interconnect Technologies houses Center for Advanced Microelectronics Manufacturing (CAMM) in partnership with Binghamton University and Cornell, with $49M DoD production and R&D contract.",
+    source: "DoD documentation, CAMM corporate members list"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["demographics", "infrastructure"],
+    town: "Buffalo",
+    region: "Buffalo-Niagara",
+    initiative: "",
+    strategic: "",
+    text: "Buffalo Niagara advanced manufacturing: approximately 70,000 employees, $13.2B gross regional product, 31.6% more manufacturing jobs than a typical region of its size.",
+    source: "Official regional economic data"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["demographics", "training"],
+    town: "Buffalo",
+    region: "Buffalo-Niagara",
+    initiative: "",
+    strategic: "",
+    text: "University at Buffalo produces approximately 5,000 engineering graduates per year.",
+    source: "University official data"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["demographics", "training"],
+    town: "Hamilton",
+    region: "Southern Ontario",
+    initiative: "",
+    strategic: "",
+    text: "McMaster University has approximately 10,000 undergraduate engineering students; Mohawk College approximately 12,000 full-time students; Niagara College approximately 1,500 relevant program enrollments.",
+    source: "Institutional official data"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["training", "market"],
+    town: "Hamilton",
+    region: "Hamilton corridor",
+    initiative: "clark",
+    strategic: "training-market",
+    text: "Corridor corporate market generates an estimated 42 new IPC certifications and 141 recertifications per year from identified companies — approximately 183 training events annually.",
+    source: "Company employee count data, IPC workforce percentage analysis"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["training", "market"],
+    town: "Hamilton",
+    region: "Hamilton corridor",
+    initiative: "clark",
+    strategic: "training-market",
+    text: "Total reachable Year 1 demand is conservatively estimated at 233-263 student-events per year, with a base case of 280-320.",
+    source: "Bottom-up demand analysis, training market sizing model"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["market", "capital"],
+    town: "Hamilton",
+    region: "Hamilton corridor",
+    initiative: "clark",
+    strategic: "training-revenue",
+    text: "At pricing of CAD $1,100-$1,350 per student, Year 1 gross training revenue ranges from CAD $123,200 (conservative) to CAD $211,200 (base) to CAD $413,100 (optimistic).",
+    source: "Market pricing analysis, course cost modeling"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["market", "capital"],
+    town: "Hamilton",
+    region: "Hamilton corridor",
+    initiative: "clark",
+    strategic: "break-even",
+    text: "Clark reaches monthly break-even on direct facility operating costs at approximately 2 classes per month of 8 students each.",
+    source: "Financial modeling"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["regulatory"],
+    town: "Markham",
+    region: "Southern Ontario",
+    initiative: "",
+    strategic: "",
+    text: "Artaflex operates under Canadian Controlled Goods Program (10+ years) for defense-adjacent work under Defence Production Act.",
+    source: "Company website, official certifications"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["institutional"],
+    town: "",
+    region: "Southern Ontario",
+    initiative: "",
+    strategic: "corridor-validation",
+    text: "Waterloo EDC describes Canada's Manufacturing Corridor as a formal partnership among Invest in Hamilton, London EDC, and Waterloo EDC.",
+    source: "Waterloo EDC official documentation"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["competitive-position", "infrastructure"],
+    town: "",
+    region: "Hamilton-Buffalo corridor",
+    initiative: "clark",
+    strategic: "corridor-selection",
+    text: "Hamilton-Buffalo is credible as a working corridor but evidence supports it as a plausible wedge rather than a clearly superior corridor versus Hamilton-Waterloo or Buffalo-Rochester-Syracuse alternatives.",
+    source: "Corridor comparison research"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["workforce", "training"],
+    town: "Buffalo",
+    region: "Buffalo-Niagara",
+    initiative: "",
+    strategic: "",
+    text: "University at Buffalo and SUNY Erie are expanding microelectronics and semiconductor workforce development programmes.",
+    source: "UB partnerships unit descriptions"
+  },
+  {
+    date: "2026-06-19",
+    status: "safe",
+    types: ["infrastructure"],
+    town: "Dunkirk",
+    region: "Western New York",
+    initiative: "",
+    strategic: "",
+    text: "Dunkirk has I-90 corridor access, Lake Erie port proximity, SUNY Fredonia CIED technology incubator, Jamestown Community College workforce training infrastructure, and Chautauqua County IDA support.",
+    source: "Public facility documentation"
+  },
+  {
+    date: "2026-06-19",
+    status: "provisional",
+    types: ["competitive-position", "market"],
+    town: "Buffalo",
+    region: "Buffalo-Niagara",
+    initiative: "",
+    strategic: "",
+    text: "Mettrix is the only identified quick-turn prototype PCB assembler in the Buffalo area with Class 3 capability and software loading services, but lacks public ISO/AS9100 certification.",
+    source: "Market research"
+  }
+];

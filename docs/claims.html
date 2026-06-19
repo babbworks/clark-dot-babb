@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claims Register | Clark</title>
+  <meta name="description" content="The Clark public claims register: what is safe to say, what needs validation, and what has been rejected.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="claims">
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark"><img src="images/clark-c.jpg" alt="Clark logo"></div>
+        <div>
+          <div class="site-title">CLARK</div>
+          <small>Claims register</small>
+        </div>
+      </div>
+      <div class="meta">
+        <span>Safe</span>
+        <span>Provisional</span>
+        <span>Rejected</span>
+      </div>
+    </header>
+
+    <nav class="nav" aria-label="Main">
+      <a data-nav-page="home" href="index.html">Home</a>
+      <a data-nav-page="why" href="why-clark.html">Why Clark</a>
+      <a data-nav-page="method" href="method.html">Learning &amp; Working</a>
+      <a data-nav-page="node" href="node-one.html">Niagara Assembly Centre</a>
+      <a data-nav-page="evidence" href="evidence.html">Evidence</a>
+      <a data-nav-page="library" href="docs/index.html">Library</a>
+      <a data-nav-page="participate" href="participate.html">Participate</a>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow">Public record</div>
+          <h1>Claims</h1>
+          <p class="deck">
+            Clark does not separate the argument from the record. Every claim made on this site or in the corpus is registered here with a status: safe to use, provisional and needing validation, or rejected. If a claim changes, the register changes with it.
+          </p>
+        </div>
+        <aside class="hero-card">
+          <h2>Claim statuses</h2>
+          <div class="statline">
+            <div class="stat">
+              <strong>Safe</strong>
+              <span>Verified by evidence or public record</span>
+            </div>
+            <div class="stat">
+              <strong>Provisional</strong>
+              <span>Plausible but not yet fully validated</span>
+            </div>
+          </div>
+          <div class="statline" style="margin-top:10px">
+            <div class="stat">
+              <strong>Rejected</strong>
+              <span>Disproven or found unreliable</span>
+            </div>
+            <div class="stat">
+              <strong style="font-size:1rem">12 claim types</strong>
+              <span>Workforce, capacity, capital, market, and more</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- FILTERS -->
+      <section class="section">
+        <h2>Filter by status</h2>
+        <div class="log-filter-bar" id="status-filters">
+          <button class="log-filter-btn active" data-status="all">All</button>
+          <button class="log-filter-btn" data-status="safe">Safe</button>
+          <button class="log-filter-btn" data-status="provisional">Provisional</button>
+          <button class="log-filter-btn" data-status="rejected">Rejected</button>
+        </div>
+        <h2 style="margin-top:20px">Filter by claim type</h2>
+        <div class="claim-type-bar" id="type-filters"></div>
+      </section>
+
+      <!-- ENTRY FORM (local only) -->
+      <section class="section local-only">
+        <div class="entry-form" id="claim-form">
+          <div class="entry-form-bar"><span>New claim</span></div>
+          <div class="entry-form-fields">
+            <select id="claim-status">
+              <option value="provisional">Provisional</option>
+              <option value="safe">Safe</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <input id="claim-town" type="text" placeholder="Town (e.g. Hamilton)">
+            <input id="claim-region" type="text" placeholder="Region (e.g. Southern Ontario)">
+            <div class="entry-form-row">
+              <input id="claim-initiative" type="text" placeholder="Initiative (optional)">
+              <input id="claim-strategic" type="text" placeholder="Strategic label (optional)">
+            </div>
+            <div class="entry-form-row" style="flex-basis:100%">
+              <div class="claim-type-bar" id="claim-type-input"></div>
+            </div>
+            <textarea id="claim-text" rows="2" placeholder="The claim statement..."></textarea>
+            <input id="claim-source" type="text" placeholder="Evidence source or basis">
+            <button id="claim-submit">Add</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CLAIMS FEED -->
+      <section class="section">
+        <div id="claims-feed"></div>
+        <div id="claims-more" class="feed-more" hidden>
+          <a href="#" id="claims-expand">Display more</a>
+          <span class="feed-more-sep">|</span>
+          <a href="claims-archive.html">View full register</a>
+        </div>
+      </section>
+
+      <!-- EXPORT (local only) -->
+      <section class="section local-only">
+        <div class="callout card">
+          <div class="kicker">Local tools</div>
+          <h3>Export staged claims</h3>
+          <p>Copy the merged data back into <code>claims-data.js</code> and commit.</p>
+          <button id="claims-export-btn" class="button">Copy to clipboard</button>
+          <button id="claims-clear-btn" class="button">Clear staged</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="claims-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

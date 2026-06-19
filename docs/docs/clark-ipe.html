@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clark IPE | Clark</title>
+  <meta name="description" content="Clark IPE: the Integrated Production Environment built on Eclipse Theia for industrial bench work.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body data-page="library">
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark"><img src="../images/clark-c.jpg" alt="Clark logo"></div>
+        <div>
+          <div class="site-title">CLARK</div>
+          <small>Clark IPE</small>
+        </div>
+      </div>
+      <div class="meta">
+        <span>Theia-based</span>
+        <span>In production</span>
+        <span>Open source</span>
+      </div>
+    </header>
+    <nav class="nav" aria-label="Main">
+      <a data-nav-page="home" href="../index.html">Home</a>
+      <a data-nav-page="why" href="../why-clark.html">Why Clark</a>
+      <a data-nav-page="method" href="../method.html">Learning &amp; Working</a>
+      <a data-nav-page="node" href="../node-one.html">Niagara Assembly Centre</a>
+      <a data-nav-page="evidence" href="../evidence.html">Evidence</a>
+      <a data-nav-page="library" href="index.html">Library</a>
+      <a data-nav-page="participate" href="../participate.html">Participate</a>
+    </nav>
+
+    <main>
+      <section class="section">
+        <div class="eyebrow">Clark Tools / Clarkware</div>
+        <h2>The IPE is a production workbench, not an IDE with industrial branding.</h2>
+        <p class="lead">
+          Clark IPE is the Integrated Production Environment &mdash; the first and primary product in the Clarkware family. It is a workstation-level application built on Eclipse Theia that brings job context, inspection, firmware, evidence capture, and network coordination into a single environment at the bench.
+        </p>
+      </section>
+
+      <!-- WHAT IT IS -->
+      <section class="section">
+        <h2>What the IPE is</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>The production-floor IDE</h3>
+            <p>A conventional IDE brings together the files, tools, logs, and workflows a software developer needs. The IPE does the same for industrial production: it unifies work instructions, operator notes, machine interactions, firmware workflows, inspection criteria, audit trails, and coordination threads into one workstation environment.</p>
+          </article>
+          <article class="card">
+            <h3>What it replaces</h3>
+            <p>Paper job travellers that get lost. Printed IPC binders that are never contextual. Separate PCs for firmware loading with no version tracking. Manual inspection logs in shared spreadsheets. Phone calls for cross-node coordination. The IPE replaces all of this with a single, coherent, networked workstation.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- WHY THEIA -->
+      <section class="section">
+        <h2>Built on Eclipse Theia</h2>
+        <p class="lead">
+          Theia is a professional-grade, open source framework for building IDEs and tools, maintained by the Eclipse Foundation. It is the same platform behind tools from Red Hat, IBM, Google, Arm, and EclipseSource. Clark chose Theia for seven specific reasons.
+        </p>
+        <div class="grid two">
+          <article class="card">
+            <h3>Everything is an extension</h3>
+            <p>Theia's architecture is extension-first. Every feature, including core features, is implemented as an extension using InversifyJS dependency injection. Clark can build a production workstation that looks and behaves nothing like a code editor while building on a maintained, community-supported codebase. No fork required.</p>
+          </article>
+          <article class="card">
+            <h3>Frontend/backend separation</h3>
+            <p>The frontend (TypeScript/HTML/CSS) renders the operator interface. The backend (Node.js) provides services: hardware device communication, broker connections, file access. They communicate via JSON-RPC over WebSockets. This separation means hardware drivers and network services live on the backend while the operator UI stays clean and responsive.</p>
+          </article>
+          <article class="card">
+            <h3>Code intelligence via LSP</h3>
+            <p>Language Server Protocol support means any language with an LSP server &mdash; C, C++, Rust, Assembly, Python &mdash; gains full IDE capabilities inside the IPE. For firmware work, clangd provides autocomplete, go-to-definition, and inline diagnostics without custom implementation.</p>
+          </article>
+          <article class="card">
+            <h3>Hardware debugging via DAP</h3>
+            <p>Debug Adapter Protocol connects any debugger. OpenOCD's GDB server bridges to DAP, giving the IPE source-level hardware debugging: breakpoints, stepping, register inspection &mdash; all from within the same workstation, using the JTAG probe already on the bench.</p>
+          </article>
+          <article class="card">
+            <h3>VS Code extension ecosystem</h3>
+            <p>Theia supports VS Code extensions at the plugin API level. Cortex-Debug, PlatformIO, ARM assembly highlighting, RTOS awareness plugins &mdash; the embedded development community's tools are available on day one without rebuilding them.</p>
+          </article>
+          <article class="card">
+            <h3>Theia AI agent framework</h3>
+            <p>Theia AI (CODiE Award 2025) provides LLM communication, agent orchestration, prompt management, and tool-calling built into the platform. Clark uses this to build inspection agents, defect analysis agents, firmware advisory agents, and audit summary agents &mdash; all logged alongside human actions.</p>
+          </article>
+        </div>
+        <div class="callout card" style="margin-top:18px">
+          <div class="kicker">Sovereignty, licence, and governance</div>
+          <p>The IPE is designed to offer complete sovereignty and privacy to its operators. All data stays on the facility's own infrastructure. There are no built-in mechanisms that report data back to Clark, no telemetry, and no expectations that operators share anything with the network. If a facility chooses to connect to a Clark-coordinated network, data sharing is selective, operator-controlled, and governed by the facility &mdash; not by Clark.</p>
+          <p>Theia is governed by the Eclipse Foundation under the Eclipse Public License 2.0 &mdash; a commercially friendly licence. Unlike VS Code (Microsoft-controlled, cannot be white-labelled), Theia is specifically designed for this kind of product building.</p>
+        </div>
+      </section>
+
+      <!-- FIVE PANELS -->
+      <section class="section">
+        <h2>The workstation layout</h2>
+        <p class="lead">The IPE presents five primary panels within the Theia shell. The layout is operator-configurable but defaults to a consistent arrangement.</p>
+        <div class="grid two">
+          <article class="card">
+            <div class="kicker">Panel 1</div>
+            <h3>Job Panel</h3>
+            <p>The active job view. Displays work order, part number, revision, BOM, customer, and current traveller step. When a job is scanned in, the panel populates from the Clark platform. The traveller is a sequence of gated steps &mdash; the operator progresses by completing required actions and logging evidence. This is the digital replacement for the paper traveller.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Panel 2</div>
+            <h3>Workmanship Panel</h3>
+            <p>Contextual IPC-A-610 inspection guidance. During inspection steps, the panel surfaces the applicable workmanship criteria for the assembly class. The operator logs each point as Pass, Fail, or Process Indicator. The Theia AI inspection agent can assist with defect classification from a description or photograph.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Panel 3</div>
+            <h3>Firmware Panel</h3>
+            <p>The integrated firmware environment. Monaco editor with clangd LSP for code intelligence, a flash interface connected to the physical JTAG/SWD programmer, and a binary version ledger recording exactly what was loaded to which unit. Every flash event is logged and published as a CFX message.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Panel 4</div>
+            <h3>Audit Panel</h3>
+            <p>Chronological evidence log for the current job: scans, inspections, firmware loads, signatures, photos, and AI-generated notes. The operator captures photos and attaches them to job steps. AI summaries are generated on demand. This panel produces the compliance documentation.</p>
+          </article>
+        </div>
+        <article class="card" style="margin-top:18px">
+          <div class="kicker">Panel 5</div>
+          <h3>Network Status Bar</h3>
+          <p>Persistent bar showing operator ID, IPC certification status, active job, CFX broker connection, node ID, and cross-node job indicators. The Clark network context is always visible without navigating away from the active work.</p>
+        </article>
+      </section>
+
+      <!-- IPC-CFX -->
+      <section class="section">
+        <h2>IPC-CFX integration</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>CFX as the communication spine</h3>
+            <p>Every significant IPE event &mdash; job opening, inspection completion, firmware flash, unit completion &mdash; becomes an IPC-CFX v2.0 message. The IPE maintains a persistent AMQP broker connection. Each node runs its own broker; node brokers connect to the Clark platform broker. IPEs work fully offline with a local broker and sync when connectivity returns.</p>
+          </article>
+          <article class="card">
+            <h3>Human workstation extensions</h3>
+            <p>The February 2025 CFX v2.0 release introduced human workstation message types: OperatorActivity, WorkInstructionCompleted, SignoffRequired. These are the IPE's most direct alignment point with the evolving standard. Clark also publishes a custom FirmwareProvisioned extension under the com.clark.ipe namespace for firmware traceability.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- AI AGENTS -->
+      <section class="section">
+        <h2>AI agents</h2>
+        <p class="lead">The IPE defines four specialised agents using the Theia AI framework. All agent interactions are logged alongside human actions in the audit trail.</p>
+        <div class="grid two">
+          <article class="card">
+            <h3>Inspection Agent</h3>
+            <p>Assists during IPC inspection steps. When an operator is uncertain about a condition, the agent queries the IPC criteria database and suggests the applicable criterion, classification, and disposition. The agent's recommendation and the operator's final decision are both recorded.</p>
+          </article>
+          <article class="card">
+            <h3>Defect Analysis Agent</h3>
+            <p>Reviews defect records against the job's historical pattern, suggests root causes and corrective actions, and generates structured defect reports in CFX format.</p>
+          </article>
+          <article class="card">
+            <h3>Firmware Advisory Agent</h3>
+            <p>Available during firmware steps. Answers questions about target firmware, explains binary parameters, and identifies implications of version changes using DWARF debug information as context.</p>
+          </article>
+          <article class="card">
+            <h3>Audit Summary Agent</h3>
+            <p>On job close, generates a structured summary: steps completed, inspection results, defects, firmware versions, operator IDs, and timestamps. The summary is appended to the job record for customer delivery.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- DEPLOYMENT -->
+      <section class="section">
+        <h2>Deployment</h2>
+        <div class="grid three">
+          <article class="card">
+            <h3>Electron desktop</h3>
+            <p>Native application on a workstation PC. No browser, no network dependency for the frontend. Full hardware device access. The default for production workstations &mdash; fast, offline-capable, and the most deployable option for corridor nodes.</p>
+          </article>
+          <article class="card">
+            <h3>Browser-connected</h3>
+            <p>Frontend in a browser, backend on a local server. Suitable for shared workstations or thin-client deployments where multiple operators share infrastructure.</p>
+          </article>
+          <article class="card">
+            <h3>Browser-only</h3>
+            <p>Lightweight read-only views (audit panel, network status) hosted as web pages. Useful for customer dashboards and management visibility without requiring hardware access.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- CURRENT STATUS -->
+      <section class="section">
+        <div class="callout card">
+          <div class="kicker">Current status</div>
+          <h3>Clark IPE is in active production development.</h3>
+          <p>The current build boots the Theia shell, renders the four primary panels, and supports profile CRUD. Task detail interaction and job workflow integration are next. The IPE is being developed against Theia 1.69.</p>
+        </div>
+      </section>
+
+      <!-- SOURCE LINKS -->
+      <section class="section">
+        <div class="callout card">
+          <div class="kicker">Source corpus</div>
+          <h3>Deeper documentation</h3>
+          <div class="taglist" style="margin-top:14px">
+            <a class="tag" href="products/clarkware/clark-ipe-architecture.md">IPE architecture spec</a>
+            <a class="tag" href="products/clarkware/clarkware.md">Clarkware product definition</a>
+            <a class="tag" href="ipe-dev/01-vision.md">IPE vision</a>
+            <a class="tag" href="ipe-dev/02-principles.md">IPE principles</a>
+            <a class="tag" href="ipe-dev/03-electronics-wedge.md">Electronics wedge</a>
+            <a class="tag" href="ipe-dev/04-architecture-map.md">Architecture map</a>
+            <a class="tag" href="ipe-dev/05-roadmap.md">Roadmap</a>
+            <a class="tag" href="clarkware.html">Back to Clarkware overview</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="../app.js"></script>
+</body>
+</html>

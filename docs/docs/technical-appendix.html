@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Technical Appendix | Clark</title>
-  <meta name="description" content="Clarkware and IPE: the technical appendix behind the public evidence layer.">
+  <title>Clark Tools | Clark</title>
+  <meta name="description" content="Clark Tools: the software layer behind Learning and Working. Clarkware, Clark IPE, and the tools that support individual and network operations.">
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body data-page="library">
@@ -14,13 +14,13 @@
         <div class="mark"><img src="../images/clark-c.jpg" alt="Clark logo"></div>
         <div>
           <div class="site-title">CLARK</div>
-          <small>Technical appendix</small>
+          <small>Clark Tools</small>
         </div>
       </div>
       <div class="meta">
-        <span>IPE</span>
         <span>Clarkware</span>
-        <span>Architecture</span>
+        <span>Clark IPE</span>
+        <span>Open source</span>
       </div>
     </header>
     <nav class="nav" aria-label="Main">
@@ -35,45 +35,61 @@
 
     <main>
       <section class="section">
-        <div class="eyebrow">System boundary</div>
-        <h2>The technical layer supports Learning and Working; it does not replace them.</h2>
+        <div class="eyebrow">Software layer</div>
+        <h2>Clark builds tools that serve the work, not the other way around.</h2>
         <p class="lead">
-          Clarkware is the software family behind the evidence layer. The IPE is the workstation-level environment where work, context, and record meet.
+          The software layer supports Learning and Working. It does not replace them. Clark's tools exist to record what happens on the floor, make that record trustworthy, and connect facilities into a coordinated network. The commitment is to open source industrial software that any centre, node, or regional actor can adopt.
         </p>
       </section>
 
       <section class="section">
         <div class="grid two">
           <article class="card">
-            <h3>The shell</h3>
-            <p>A thin Theia-based workstation shell gives the user workspace navigation, dockable panels, command access, and extension support.</p>
+            <div class="kicker">Open source industrial tools</div>
+            <h3>Clarkware</h3>
+            <p>Clarkware is the name for every piece of software Clark builds. It is a family of tools &mdash; not a monolithic application &mdash; designed for real industrial environments. The tools are open source, extension-based, and built so that any facility can run them independently.</p>
+            <p>Clarkware covers production workstations, training delivery, network coordination, and facility reporting. Each tool has a clear scope and can be adopted on its own.</p>
+            <p><a href="clarkware.html">Read the full Clarkware overview</a></p>
           </article>
           <article class="card">
-            <h3>The services</h3>
-            <p>Jobs, notes, evidence capture, station metadata, test results, messaging, and reporting belong in services and backend modules.</p>
-          </article>
-          <article class="card">
-            <h3>The adapters</h3>
-            <p>Serial tools, watched folders, firmware flashing, test export ingestion, and local databases connect the bench to the system.</p>
-          </article>
-          <article class="card">
-            <h3>The record</h3>
-            <p>Append-first event history, job-linked artifacts, and clear human/AI/automation distinctions preserve the audit trail.</p>
+            <div class="kicker">In production development</div>
+            <h3>Clark IPE</h3>
+            <p>The Integrated Production Environment is the first and primary Clarkware product. It is a Theia-based workstation application that unifies job context, IPC inspection, firmware workflows, evidence capture, and network coordination at the bench.</p>
+            <p>The IPE is already in active development. The current build boots the Theia shell, renders four primary panels, and supports profile management. It is being developed against Theia 1.69.</p>
+            <p><a href="clark-ipe.html">Read about Clark IPE and Theia</a></p>
           </article>
         </div>
       </section>
 
       <section class="section">
-        <h2>What is not in v1</h2>
+        <h2>Other tools that support operations</h2>
         <div class="grid three">
           <article class="card">
-            <p>Not an ERP replacement.</p>
+            <h3>Clark Courses platform</h3>
+            <p>Training delivery and certification tracking for IPC-aligned industrial programmes. Designed to work alongside the IPE at centres, but deployable independently by any training provider.</p>
           </article>
           <article class="card">
-            <p>Not a generic chat app with a file tree.</p>
+            <h3>Network coordination</h3>
+            <p>Cross-node job routing, corridor-level visibility, and audit aggregation. Built on IPC-CFX messaging so that any standards-compliant system can participate without custom integration work.</p>
           </article>
           <article class="card">
-            <p>Not a sprawling platform before one centre works.</p>
+            <h3>Facility reporting</h3>
+            <p>Shift reports, quality summaries, and production dashboards derived from workstation-level event streams. Built from evidence, not from separate data entry.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>What the tools are not</h2>
+        <div class="grid three">
+          <article class="card">
+            <p>Not an ERP replacement. Clarkware is a workstation-first evidence system, not a business management platform.</p>
+          </article>
+          <article class="card">
+            <p>Not a generic chat app with a file tree. The IPE is purpose-built for production, inspection, and firmware work.</p>
+          </article>
+          <article class="card">
+            <p>Not a sprawling platform before one centre works. The tools prove themselves at a single facility before scaling to the network.</p>
           </article>
         </div>
       </section>
@@ -82,7 +98,8 @@
         <div class="callout card">
           <div class="kicker">Why it matters</div>
           <h3>The software makes the public record trustworthy.</h3>
-          <p>That is why it belongs in the appendix and not on the front page. The public argument stays simple; the technical basis remains available.</p>
+          <p>Clark Tools are the mechanism that turns floor activity into structured, auditable, network-legible evidence. That evidence is what makes Clark's public claims inspectable rather than decorative.</p>
+          <p><a href="../evidence.html">See the evidence layer</a></p>
         </div>
       </section>
     </main>

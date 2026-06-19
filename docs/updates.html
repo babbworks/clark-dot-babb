@@ -18,9 +18,9 @@
         </div>
       </div>
       <div class="meta">
-        <span>Dispatches</span>
-        <span>Corrections</span>
-        <span>Field notes</span>
+        <span>Log</span>
+        <span>Posts</span>
+        <span>Archive</span>
       </div>
     </header>
 
@@ -40,93 +40,99 @@
           <div class="eyebrow">Live log</div>
           <h1>Updates</h1>
           <p class="deck">
-            Clark should read like a working project, not a frozen pitch. This page holds the current record of changes, field observations, corrections, and short dispatches that mark real movement.
+            Clark should read like a working project, not a frozen pitch. This page holds the current record of field observations, market signals, structural changes, and corrections.
           </p>
         </div>
         <aside class="hero-card">
           <h2>What belongs here</h2>
           <div class="statline">
             <div class="stat">
-              <strong>Changes</strong>
-              <span>Site edits and structural shifts</span>
-            </div>
-            <div class="stat">
               <strong>Field</strong>
               <span>Visits, calls, meetings, observations</span>
-            </div>
-            <div class="stat">
-              <strong>Corrections</strong>
-              <span>What was updated and why</span>
             </div>
             <div class="stat">
               <strong>Signals</strong>
               <span>New leads worth tracking</span>
             </div>
+            <div class="stat">
+              <strong>Changes</strong>
+              <span>Site edits and structural shifts</span>
+            </div>
+            <div class="stat">
+              <strong>Corrections</strong>
+              <span>What was updated and why</span>
+            </div>
           </div>
         </aside>
       </section>
 
-      <section class="section">
-        <div class="grid two">
-          <article class="card">
-            <div class="kicker">2026-06-18</div>
-            <h3>Learning and Working became the primary public frame</h3>
-            <p>The site now centers Clark on two legs: Learning, which includes reporting, connecting, and certification; and Working, which includes production, cooperation, and financing. The Niagara Assembly Centre remains the first hypothesized test case, not a Clark-owned asset.</p>
-            <div class="taglist">
-              <span class="tag">Site</span><span class="tag">Learning</span><span class="tag">Working</span>
-            </div>
-          </article>
-          <article class="card">
-            <div class="kicker">2026-06-18</div>
-            <h3>Capacity preservation was made explicit</h3>
-            <p>The public argument now says what the network should do when ownership ages out or a shop declines: preserve productive capacity through partnership, conversion, or acquisition where justified.</p>
-            <div class="taglist">
-              <span class="tag">Capacity</span><span class="tag">Acquisition</span><span class="tag">Conversion</span>
-            </div>
-          </article>
-          <article class="card">
-            <div class="kicker">2026-06-18</div>
-            <h3>The Call to Arms moved into the library</h3>
-            <p>The industrial-recovery article now exists as a standalone dispatch and a full library page, so the short public page can point readers to the source form without burying the narrative.</p>
-            <div class="taglist">
-              <span class="tag">Dispatch</span><span class="tag">Library</span><span class="tag">Article</span>
-            </div>
-          </article>
-          <article class="card">
-            <div class="kicker">2026-06-18</div>
-            <h3>The evidence surface and claims register were tightened</h3>
-            <p>The site now has a clearer split between what is safe to say, what needs validation, and what stays rejected or merely hypothesized. That keeps the site persuasive without letting it drift into story mode.</p>
-            <div class="taglist">
-              <span class="tag">Evidence</span><span class="tag">Claims</span><span class="tag">Trust</span>
-            </div>
-          </article>
+      <!-- LOG FEED -->
+      <section class="section" id="log-section">
+        <h2>Log</h2>
+
+        <div class="local-only entry-form" id="log-form">
+          <div class="entry-form-bar"><span>New log entry</span></div>
+          <div class="entry-form-fields">
+            <select id="log-type">
+              <option value="field">Field</option>
+              <option value="signal">Signal</option>
+              <option value="change">Change</option>
+              <option value="correction">Correction</option>
+            </select>
+            <input id="log-initiative" type="text" placeholder="Initiative (e.g. clark, niagara-assembly)">
+            <input id="log-strategic" type="text" placeholder="Strategic label (e.g. site-search, curriculum)">
+            <input id="log-text" type="text" placeholder="One-liner observation...">
+            <button id="log-submit">Add</button>
+          </div>
+        </div>
+
+        <div id="log-feed" class="log-feed"></div>
+        <div id="log-more" class="feed-more" hidden>
+          <a href="#" id="log-expand">Display more</a>
+          <span class="feed-more-sep">|</span>
+          <a href="log.html">View full log</a>
         </div>
       </section>
 
-      <section class="section">
-        <h2>Use this page as the current changelog</h2>
-        <div class="grid two">
-          <article class="card">
-            <h3>For readers</h3>
-            <p>If you want the most current version of the site story, start here before reading the library or the thesis pages.</p>
-          </article>
-          <article class="card">
-            <h3>For contributors</h3>
-            <p>If you have a correction, a field note, or a concrete update from a partner conversation, this is the place to anchor it.</p>
-          </article>
+      <!-- POSTS -->
+      <section class="section" id="posts-section">
+        <h2>Posts</h2>
+
+        <div class="local-only entry-form" id="post-form">
+          <div class="entry-form-bar"><span>New post</span></div>
+          <div class="entry-form-fields">
+            <input id="post-title" type="text" placeholder="Title">
+            <div class="entry-form-row">
+              <input id="post-initiative" type="text" placeholder="Initiative">
+              <input id="post-strategic" type="text" placeholder="Strategic label">
+            </div>
+            <textarea id="post-body" rows="3" placeholder="Body text..."></textarea>
+            <input id="post-tags" type="text" placeholder="Tags (comma-separated)">
+            <button id="post-submit">Add</button>
+          </div>
+        </div>
+
+        <div id="posts-grid" class="grid two"></div>
+        <div id="posts-more" class="feed-more" hidden>
+          <a href="#" id="posts-expand">Display more</a>
+          <span class="feed-more-sep">|</span>
+          <a href="archive.html">View archive</a>
         </div>
       </section>
 
-      <section class="section">
+      <!-- EXPORT (local only) -->
+      <section class="section local-only">
         <div class="callout card">
-          <div class="kicker">Archive rule</div>
-          <h3>Updates are not marketing posts.</h3>
-          <p>They are the short record of what changed, what was learned, and what should be checked next.</p>
-          <p><a href="docs/index.html">Open the library</a></p>
+          <div class="kicker">Local tools</div>
+          <h3>Export staged entries</h3>
+          <p>Copy the merged data back into <code>updates-data.js</code> and commit.</p>
+          <button id="export-btn" class="button">Copy to clipboard</button>
+          <button id="clear-staged-btn" class="button">Clear staged</button>
         </div>
       </section>
     </main>
   </div>
+  <script src="updates-data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

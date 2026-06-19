@@ -21,17 +21,8 @@ The choice between Integrated Production Environment and Industrial Process Envi
 | IP and trademark      | 'Integrated Production Environment' as a product name for electronics manufacturing software is not a term of art — it is available as a brand. 'IPE' as an abbreviation is also available in this context.                                                            | 'Industrial Process Environment' is closer to existing industrial software terminology and therefore harder to brand distinctively.        |
 | Recommendation        | Preferred                                                                                                                                                                                                                                                              | Not recommended                                                                                                                            |
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><p><strong>Recommendation — Integrated Production Environment</strong></p>
-<p>Clark should adopt Integrated Production Environment as the full term and IPE as the abbreviation. The IDE analogy is intentional and powerful: just as a development IDE integrates code editor, compiler, debugger, and version control into one environment, the Clarkware IPE integrates job execution, workmanship inspection, firmware loading, evidence capture, and network coordination into one workstation environment. This framing is immediately legible to Clark's customers — engineers and hardware teams who already live in IDEs.</p></td>
-</tr>
-</tbody>
-</table>
+> **Recommendation — Integrated Production Environment**
+> Clark should adopt Integrated Production Environment as the full term and IPE as the abbreviation. The IDE analogy is intentional and powerful: just as a development IDE integrates code editor, compiler, debugger, and version control into one environment, the Clarkware IPE integrates job execution, workmanship inspection, firmware loading, evidence capture, and network coordination into one workstation environment. This framing is immediately legible to Clark's customers — engineers and hardware teams who already live in IDEs.
 
 **2. What the IPE Is — A Conceptual Definition**
 
@@ -39,17 +30,8 @@ The Clarkware IPE is the software environment that an operator, technician, or e
 
 The IPE is not a quality management system. It is not an ERP. It is not a traditional MES in the sense of a centralized scheduling engine. It is a workstation-level environment — the digital equivalent of the technician's bench — that makes every action at that bench visible, auditable, and network-coordinated.
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><p><strong>The Design Philosophy in One Sentence</strong></p>
-<p>The IPE brings the discipline of software development tooling — code intelligence, version control, debugger integration, real-time collaboration, AI assistance — to the electronics assembly workstation, and connects that workstation as a native participant in the IPC Connected Factory Exchange network.</p></td>
-</tr>
-</tbody>
-</table>
+> **The Design Philosophy in One Sentence**
+> The IPE brings the discipline of software development tooling — code intelligence, version control, debugger integration, real-time collaboration, AI assistance — to the electronics assembly workstation, and connects that workstation as a native participant in the IPC Connected Factory Exchange network.
 
 **2.1 What the IPE Replaces**
 
@@ -173,17 +155,8 @@ Every significant event in the IPE — a job opening, a unit completing a step, 
 
 The IPE does not require the broker to be remote. In a standalone node with no external network, the CFX broker can run locally on the workstation itself (RabbitMQ is a lightweight service). When the node is connected to the Clark network, the broker bridges to Clark's central AMQP infrastructure. The IPE's CFX messages flow upward to the Clark platform and sideways to any other CFX-aware systems the customer is already running.
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><p><strong>The CFX Broker Architecture</strong></p>
-<p>Each IPE workstation runs a lightweight AMQP client in its Node.js backend. In a connected node, this client connects to a shared broker at the node level (one broker per node, not per workstation). The node-level broker in turn connects to Clark's platform broker, which aggregates events across all nodes in the network. This tiered architecture means IPEs work fully offline (local broker only) and sync to the Clark network when connectivity is available — important for manufacturing environments where network reliability is not guaranteed.</p></td>
-</tr>
-</tbody>
-</table>
+> **The CFX Broker Architecture**
+> Each IPE workstation runs a lightweight AMQP client in its Node.js backend. In a connected node, this client connects to a shared broker at the node level (one broker per node, not per workstation). The node-level broker in turn connects to Clark's platform broker, which aggregates events across all nodes in the network. This tiered architecture means IPEs work fully offline (local broker only) and sync to the Clark network when connectivity is available — important for manufacturing environments where network reliability is not guaranteed.
 
 **5.2 IPE Events Mapped to CFX Messages**
 
@@ -210,38 +183,29 @@ Green rows use the v2.0 human workstation message extensions — the IPE's most 
 
 IPC-CFX does not currently have a native firmware provisioning message type — the standard focuses on mechanical assembly and electronic inspection processes. Clark's IPE will publish a custom extension message for firmware events. CFX explicitly supports extension messages through a vendor namespace mechanism. The FirmwareProvisioned message is a Clark proprietary extension under the namespace com.clark.ipe.
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><p>// CFX Custom Extension — com.clark.ipe.FirmwareProvisioned</p>
-<p>// Namespace: com.clark.ipe / Version: 1.0.0</p>
-<p>{</p>
-<p>"MessageName": "com.clark.ipe/FirmwareProvisioned",</p>
-<p>"Version": "1.0.0",</p>
-<p>"TimeStamp": "2025-03-25T14:32:01Z",</p>
-<p>"UniqueIdentifier": "ipe-fw-20250325-143201-0042",</p>
-<p>"Source": "clark-ipe-workstation-01",</p>
-<p>"FirmwareProvisioningInfo": {</p>
-<p>"UnitSerialNumber": "SN-00842",</p>
-<p>"TargetMCU": "STM32F407VGT6",</p>
-<p>"FirmwareBinaryHash": "sha256:a3f8c2d1...",</p>
-<p>"FirmwareVersionString": "v1.4.2-prod",</p>
-<p>"BinaryFilePath": "builds/v1.4.2-prod/firmware.elf",</p>
-<p>"ProgrammerType": "SEGGER J-Link",</p>
-<p>"ProgrammerSerialNumber": "JL-800123456",</p>
-<p>"FlashResult": "Success",</p>
-<p>"VerificationResult": "CRC-verified",</p>
-<p>"OperatorID": "op-007",</p>
-<p>"WorkOrderID": "WO-20250325-0019",</p>
-<p>"JobStepID": "step-04-program"</p>
-<p>}</p>
-<p>}</p></td>
-</tr>
-</tbody>
-</table>
+> // CFX Custom Extension — com.clark.ipe.FirmwareProvisioned
+> // Namespace: com.clark.ipe / Version: 1.0.0
+> {
+> "MessageName": "com.clark.ipe/FirmwareProvisioned",
+> "Version": "1.0.0",
+> "TimeStamp": "2025-03-25T14:32:01Z",
+> "UniqueIdentifier": "ipe-fw-20250325-143201-0042",
+> "Source": "clark-ipe-workstation-01",
+> "FirmwareProvisioningInfo": {
+> "UnitSerialNumber": "SN-00842",
+> "TargetMCU": "STM32F407VGT6",
+> "FirmwareBinaryHash": "sha256:a3f8c2d1...",
+> "FirmwareVersionString": "v1.4.2-prod",
+> "BinaryFilePath": "builds/v1.4.2-prod/firmware.elf",
+> "ProgrammerType": "SEGGER J-Link",
+> "ProgrammerSerialNumber": "JL-800123456",
+> "FlashResult": "Success",
+> "VerificationResult": "CRC-verified",
+> "OperatorID": "op-007",
+> "WorkOrderID": "WO-20250325-0019",
+> "JobStepID": "step-04-program"
+> }
+> }
 
 This message gives any downstream system — the Clark platform, a customer's own MES, or a quality audit tool — a complete, verifiable, immutable record of exactly what firmware was loaded to exactly which unit, by whom, when, and with what result. For defense-adjacent customers, this is the firmware traceability record that their supply chain compliance teams require.
 
@@ -322,17 +286,8 @@ The IPE defines four specialized AI agents using the Theia AI agent framework. A
 | **Firmware Advisory Agent** | Available during program steps. Can answer questions about the target firmware (if source code is accessible in the workspace), explain what a binary parameter does, or identify the implications of a specific version change. Uses DWARF debug information extracted by FirmwareService as context.                                                                                                          |
 | **Audit Summary Agent**     | On job close, generates a structured audit summary: all steps completed, inspection results, defects and dispositions, firmware version loaded, operator IDs, and timestamps. The summary is appended to the job record and available for customer delivery. Uses the AuditLogger event stream as its source.                                                                                                   |
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><p><strong>Transparency and Control</strong></p>
-<p>Theia AI is designed with full transparency — operators and auditors can see exactly what prompts were sent to the AI and what it returned. The complete AI communication history is logged in the AuditLogger alongside human operator events. This is critical for defense-adjacent work where AI involvement in quality decisions must be documented and auditable. Clark's LLM provider choice can be fully self-hosted if customer data sovereignty requirements demand it.</p></td>
-</tr>
-</tbody>
-</table>
+> **Transparency and Control**
+> Theia AI is designed with full transparency — operators and auditors can see exactly what prompts were sent to the AI and what it returned. The complete AI communication history is logged in the AuditLogger alongside human operator events. This is critical for defense-adjacent work where AI involvement in quality decisions must be documented and auditable. Clark's LLM provider choice can be fully self-hosted if customer data sovereignty requirements demand it.
 
 **8. Clarkware Extension Architecture — What Clark Builds**
 
@@ -383,65 +338,29 @@ The IPE is built incrementally. The following sequence is aligned with Clarkware
 
 Build clark-ipe-core, clark-job-service, clark-job-panel, clark-cfx-publisher (stub), and clark-audit-logger. Deploy to one workstation at Niagara Assembly. The result: a workstation that replaces the paper traveller with a live digital job card. CFX messages are logged locally only. No firmware integration, no IPC inspection guidance yet. Operator feedback drives Panel 2 and 3 design.
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><p><strong>Phase 1 CFX status</strong></p>
-<p>WorkOrderStarted and UnitStarted/UnitCompleted messages published. Local broker only. This is a functional CFX endpoint — the workstation is already a native CFX participant.</p></td>
-</tr>
-</tbody>
-</table>
+> **Phase 1 CFX status**
+> WorkOrderStarted and UnitStarted/UnitCompleted messages published. Local broker only. This is a functional CFX endpoint — the workstation is already a native CFX participant.
 
 **Phase 2 — Network Coordination (Weeks 8–16)**
 
 Connect clark-cfx-publisher to the Clark platform broker. Build clark-network-statusbar. Deploy clark-session with operator login and role management. Cross-node job visibility becomes live. Customer-facing job status becomes real-time. This is the feature no Unisoft or Tulip deployment can offer — and it is fully functional before any firmware or AI capability is added.
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><p><strong>Phase 2 milestone</strong></p>
-<p>The Clark network can see every open job across all connected nodes in real time. Any operator at any node can see what step a job is on, who is working on it, and when it was last updated. This is the platform value proposition made tangible.</p></td>
-</tr>
-</tbody>
-</table>
+> **Phase 2 milestone**
+> The Clark network can see every open job across all connected nodes in real time. Any operator at any node can see what step a job is on, who is working on it, and when it was last updated. This is the platform value proposition made tangible.
 
 **Phase 3 — Workmanship Intelligence (Weeks 16–24)**
 
 Build clark-inspection-service (IPC criteria database, inspection recording), clark-workmanship-panel, and clark-ipe-agents (Inspection Agent and Defect Analysis Agent). The Workmanship Panel surfaces IPC-A-610 criteria in context during inspection steps. AI assistance for defect classification becomes available. InspectionCompleted CFX messages carry structured quality data.
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><p><strong>Phase 3 milestone</strong></p>
-<p>A Clark node can produce an IPC-aligned, AI-assisted, CFX-structured quality record for every assembly. This is the document a defense-adjacent customer's procurement team will ask for on first audit.</p></td>
-</tr>
-</tbody>
-</table>
+> **Phase 3 milestone**
+> A Clark node can produce an IPC-aligned, AI-assisted, CFX-structured quality record for every assembly. This is the document a defense-adjacent customer's procurement team will ask for on first audit.
 
 **Phase 4 — Firmware Environment (Weeks 24–40)**
 
 Build clark-firmware-service (DeviceDriverManager, Binary Version Ledger), clark-firmware-panel, and clark-ipe-agents (Firmware Advisory Agent). Integrate LSP servers (clangd, rust-analyzer), DAP adapter (OpenOCD bridge), and flash interface. Publish FirmwareProvisioned CFX custom extension messages.
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><p><strong>Phase 4 milestone</strong></p>
-<p>The IPE becomes the only production workstation tool in the small EMS market that provides firmware traceability from binary hash to unit serial number, with LSP-powered code intelligence and hardware debugging, all in the same environment as the job traveller and inspection log.</p></td>
-</tr>
-</tbody>
-</table>
+> **Phase 4 milestone**
+> The IPE becomes the only production workstation tool in the small EMS market that provides firmware traceability from binary hash to unit serial number, with LSP-powered code intelligence and hardware debugging, all in the same environment as the job traveller and inspection log.
 
 **10. Deployment — Desktop or Browser, Connected or Standalone**
 

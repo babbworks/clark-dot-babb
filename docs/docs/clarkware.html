@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clarkware | Clark</title>
+  <meta name="description" content="Clarkware: open source industrial tools for networks, centres, and regional actors.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body data-page="library">
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark"><img src="../images/clark-c.jpg" alt="Clark logo"></div>
+        <div>
+          <div class="site-title">CLARK</div>
+          <small>Clarkware</small>
+        </div>
+      </div>
+      <div class="meta">
+        <span>Open source</span>
+        <span>Industrial tools</span>
+        <span>Network-native</span>
+      </div>
+    </header>
+    <nav class="nav" aria-label="Main">
+      <a data-nav-page="home" href="../index.html">Home</a>
+      <a data-nav-page="why" href="../why-clark.html">Why Clark</a>
+      <a data-nav-page="method" href="../method.html">Learning &amp; Working</a>
+      <a data-nav-page="node" href="../node-one.html">Niagara Assembly Centre</a>
+      <a data-nav-page="evidence" href="../evidence.html">Evidence</a>
+      <a data-nav-page="library" href="index.html">Library</a>
+      <a data-nav-page="participate" href="../participate.html">Participate</a>
+    </nav>
+
+    <main>
+      <section class="section">
+        <div class="eyebrow">Clark Tools</div>
+        <h2>Clarkware is an open commitment to build industrial software that serves networks, not vendors.</h2>
+        <p class="lead">
+          Clarkware is the name for every piece of software Clark builds and releases. The commitment is simple: these tools should be open source, built for real industrial environments, and designed so that any centre, node, or regional actor can use them without asking Clark for permission.
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="grid two">
+          <article class="card">
+            <h3>Why open source</h3>
+            <p>Industrial software has historically locked operators into vendor ecosystems. A small assembly shop that adopts an MES, a quality system, or a training platform is usually adopting a dependency. When the vendor raises prices, changes direction, or disappears, the shop is stranded.</p>
+            <p>Clarkware is built on the assumption that this pattern is avoidable. The tools should be open enough that any facility can run them independently, fork them, or replace Clark entirely without losing their operational data or their workflow. The licence is commercially friendly. The architecture is extension-based. The data formats are documented.</p>
+          </article>
+          <article class="card">
+            <h3>Sovereignty first, network second</h3>
+            <p>Every Clarkware tool is designed to offer complete sovereignty, independence, and privacy to its users. A facility runs its own instance, owns its own data, and owes nothing to Clark or to any network. There are zero built-in mechanisms or expectations that operators contribute data to working networks, to Clark, or to anyone else.</p>
+            <p>Network features exist for facilities that choose to participate. Data can be pooled or published based on the needs and preferences of each company &mdash; selectively, on their terms, through controls they operate. The network is an option, never a requirement.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>The Clarkware family</h2>
+        <p class="lead">Clarkware is a family of tools, not a single application. Each tool has a clear scope and can be adopted independently.</p>
+        <div class="grid two">
+          <article class="card">
+            <div class="kicker">Production</div>
+            <h3>Clark IPE</h3>
+            <p>The Integrated Production Environment. A Theia-based workstation shell for electronics assembly, firmware, inspection, and evidence capture. Already in production development.</p>
+            <p><a href="clark-ipe.html">Read about Clark IPE</a></p>
+          </article>
+          <article class="card">
+            <div class="kicker">Planned</div>
+            <h3>Clark Courses platform</h3>
+            <p>Training delivery, curriculum management, and certification tracking for IPC-aligned industrial training programmes. Designed to work alongside the IPE but deployable on its own.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Planned</div>
+            <h3>Network coordination layer</h3>
+            <p>Cross-node job routing, corridor-level visibility, and platform-wide audit aggregation. Built on IPC-CFX messaging so that any CFX-aware system can participate without custom integration.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Planned</div>
+            <h3>Facility reporting tools</h3>
+            <p>Facility-level views that aggregate workstation activity into shift reports, quality summaries, and production dashboards. Built from IPE event streams, not from a separate data entry layer.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Design principles</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Operator sovereignty</h3>
+            <p>Each facility's data belongs to that facility. Nothing phones home. Nothing requires an account, a subscription, or a handshake with Clark. If a company wants to run Clarkware in complete isolation, with no network connection and no external visibility, the tools work exactly the same way.</p>
+          </article>
+          <article class="card">
+            <h3>Workstation first</h3>
+            <p>Every tool starts at the bench. If the person doing the work does not benefit directly, the tool is wrong. Management views, dashboards, and reports are derived from workstation-level records, never the other way around.</p>
+          </article>
+          <article class="card">
+            <h3>Evidence by default</h3>
+            <p>Every action produces a record. Human actions, AI actions, and automated actions are distinguished in the log. The audit trail is append-only and cannot be silently rewritten.</p>
+          </article>
+          <article class="card">
+            <h3>Extension, not configuration</h3>
+            <p>Clarkware tools are built on extension architectures. New capabilities are added as modules, not as settings screens. This means the tools can be adapted to specific industries, workflows, and equipment without forking the core.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Who Clarkware serves</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Individual facilities</h3>
+            <p>A single shop can adopt the IPE to replace paper travellers, disconnected firmware tools, and manual inspection logs. No network membership required. No licence fee for the open source core.</p>
+          </article>
+          <article class="card">
+            <h3>Network nodes</h3>
+            <p>Facilities that join a Clark-coordinated network get cross-node visibility, shared job context, and platform-level audit aggregation on top of their local Clarkware installation.</p>
+          </article>
+          <article class="card">
+            <h3>Regional industrial actors</h3>
+            <p>Workforce boards, economic development agencies, and training institutions can use Clarkware tools to coordinate training delivery, track certification pipelines, and produce evidence of industrial capacity that is legible to investors and policymakers.</p>
+          </article>
+          <article class="card">
+            <h3>Customers and auditors</h3>
+            <p>Clarkware produces structured, machine-readable quality and production records. A customer's procurement team or a compliance auditor can query the system directly rather than requesting a bespoke report.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="callout card">
+          <div class="kicker">Source corpus</div>
+          <h3>Read the underlying documents</h3>
+          <p>The library contains the full product definitions, architecture specifications, data models, roadmaps, and financial plans behind Clarkware.</p>
+          <div class="taglist" style="margin-top:14px">
+            <a class="tag" href="products/clarkware/clarkware.md">Product definition</a>
+            <a class="tag" href="products/clarkware/clarkware-architecture.md">Architecture v1</a>
+            <a class="tag" href="products/clarkware/clarkware-data-model.md">Data model</a>
+            <a class="tag" href="products/clarkware/clarkware-roadmap.md">Roadmap</a>
+            <a class="tag" href="products/clarkware/clarkware-messaging-model.md">Messaging model</a>
+            <a class="tag" href="products/clarkware/clarkware-financial-plan.md">Financial plan</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="../app.js"></script>
+</body>
+</html>
