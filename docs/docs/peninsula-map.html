@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peninsula Map | Clark</title>
+  <meta name="description" content="Interactive map of the Niagara Peninsula corridor: municipalities, escarpment, rail, watersheds, and the industrial landscape.">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .map-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(36, 31, 25, 0.12);
+      box-shadow: 0 18px 55px rgba(29, 20, 10, 0.08);
+      background: #1a1a1e;
+    }
+    .map-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    .map-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .map-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .map-fullscreen-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: rgba(255, 250, 241, 0.86);
+      border: 1px solid rgba(36, 31, 25, 0.12);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .map-fullscreen-btn:hover {
+      background: var(--accent-2);
+      color: #fff;
+      border-color: var(--accent-2);
+      transform: translateY(-1px);
+    }
+    .map-fullscreen-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+    .map-wrap.is-fullscreen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      border-radius: 0;
+      aspect-ratio: auto;
+      border: none;
+    }
+    .map-wrap.is-fullscreen iframe {
+      width: 100vw;
+      height: 100vh;
+    }
+    .fullscreen-close {
+      display: none;
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 10000;
+      padding: 10px 16px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(23, 20, 17, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+    .fullscreen-close:hover {
+      background: var(--accent);
+    }
+    .map-wrap.is-fullscreen ~ .fullscreen-close {
+      display: block;
+    }
+  </style>
+</head>
+<body data-page="library">
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark"><img src="../images/clark-c.jpg" alt="Clark logo"></div>
+        <div>
+          <div class="site-title">CLARK</div>
+          <small>Peninsula map</small>
+        </div>
+      </div>
+      <div class="meta">
+        <span>Interactive</span>
+        <span>Multi-layer</span>
+        <span>Southern Ontario</span>
+      </div>
+    </header>
+
+    <nav class="nav" aria-label="Main">
+      <a data-nav-page="home" href="../index.html">Home</a>
+      <a data-nav-page="why" href="../why-clark.html">Why Clark</a>
+      <a data-nav-page="method" href="../method.html">Learning &amp; Working</a>
+      <a data-nav-page="node" href="../node-one.html">Niagara Assembly Centre</a>
+      <a data-nav-page="evidence" href="../evidence.html">Evidence</a>
+      <a data-nav-page="library" href="index.html">Library</a>
+      <a data-nav-page="participate" href="../participate.html">Participate</a>
+    </nav>
+
+    <main>
+      <section class="section">
+        <div class="eyebrow"><a href="niagara-peninsula.html">Niagara Peninsula Report</a></div>
+        <h2>The peninsula, alive.</h2>
+        <p class="lead">
+          An interactive portrait of the Niagara Peninsula corridor &mdash; from Kitchener-Waterloo through Hamilton and the Niagara region to the border. Toggle layers to see how roads, boundaries, rail, the escarpment, and watersheds divide and connect the land.
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="map-toolbar">
+          <div class="map-toolbar-left">
+            <span style="font-family:var(--mono);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint)">Use layer controls inside map</span>
+          </div>
+          <button class="map-fullscreen-btn" id="fullscreen-btn">
+            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+            Full screen
+          </button>
+        </div>
+        <div class="map-wrap" id="map-wrap">
+          <iframe src="peninsula-map-app.html" id="map-iframe" allow="fullscreen"></iframe>
+        </div>
+        <button class="fullscreen-close" id="fullscreen-close">&times; Exit full screen</button>
+      </section>
+
+      <section class="section">
+        <h2>Layers</h2>
+        <div class="grid three">
+          <article class="card">
+            <div class="kicker">Boundaries</div>
+            <h3>Municipal &amp; regional</h3>
+            <p>City, town, and village boundaries rendered as soft glowing activity islands. County and regional municipality lines show the administrative grid. Toggle activity islands for a rainbow mosaic of urban land use, or the concession grid to see the rural quilt between major roads.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Infrastructure</div>
+            <h3>Roads, rail &amp; grid</h3>
+            <p>Primary highways (QEW, 401, 403, 406), secondary regional roads, and tertiary concession roads. Rail corridors show continental freight connections. The concession grid reveals the 2km survey pattern that still defines the landscape.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Geography</div>
+            <h3>Escarpment &amp; watersheds</h3>
+            <p>The Niagara Escarpment &mdash; the geological spine of the peninsula. Conservation authority watersheds show the invisible governance boundaries that shape development.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../app.js"></script>
+  <script>
+  (function() {
+    var wrap = document.getElementById("map-wrap");
+    var btn = document.getElementById("fullscreen-btn");
+    var closeBtn = document.getElementById("fullscreen-close");
+
+    function toggleFullscreen() {
+      wrap.classList.toggle("is-fullscreen");
+      document.body.style.overflow = wrap.classList.contains("is-fullscreen") ? "hidden" : "";
+    }
+
+    btn.addEventListener("click", toggleFullscreen);
+    closeBtn.addEventListener("click", toggleFullscreen);
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape" && wrap.classList.contains("is-fullscreen")) {
+        toggleFullscreen();
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

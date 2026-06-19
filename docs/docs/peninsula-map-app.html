@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peninsula Map</title>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #1a1a1e; overflow: hidden; }
+  #map { position: absolute; inset: 0; }
+
+  /* Warm parchment tint on the base map */
+  #map canvas { filter: sepia(0.12) saturate(0.88) brightness(1.01) contrast(1.02); }
+
+  /* Layer control panel */
+  .panel {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 240px;
+    background: rgba(245, 239, 228, 0.94);
+    backdrop-filter: blur(14px);
+    border-radius: 14px;
+    border: 1px solid rgba(36, 31, 25, 0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    overflow: hidden;
+    font-size: 13px;
+    color: #171411;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .panel.collapsed {
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .panel-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid rgba(36, 31, 25, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7b4b22;
+    font-weight: 500;
+  }
+
+  .panel-toggle-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 11;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(245, 239, 228, 0.94);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(36, 31, 25, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #171411;
+    transition: background 0.15s;
+  }
+
+  .panel-toggle-btn:hover { background: rgba(255, 250, 241, 1); }
+  .panel.collapsed ~ .panel-toggle-btn { display: flex; }
+
+  .panel-group {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(36, 31, 25, 0.06);
+  }
+
+  .panel-group:last-child { border-bottom: none; }
+
+  .panel-group-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a7f71;
+    margin-bottom: 8px;
+  }
+
+  .layer-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .layer-row:hover { opacity: 0.8; }
+
+  .layer-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid rgba(36, 31, 25, 0.1);
+  }
+
+  .layer-label {
+    flex: 1;
+    font-size: 12px;
+    color: #171411;
+  }
+
+  .layer-toggle {
+    width: 32px;
+    height: 18px;
+    border-radius: 9px;
+    background: #d8ccba;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .layer-toggle.active { background: #2a5f68; }
+
+  .layer-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+  }
+
+  .layer-toggle.active::after { transform: translateX(14px); }
+
+  .layer-row.disabled { opacity: 0.35; pointer-events: none; }
+
+  /* Map attribution styling */
+  .maplibregl-ctrl-attrib { font-size: 10px !important; }
+
+  /* Loading indicator */
+  .loading-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 20;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .loading-bar.active::after {
+    content: '';
+    display: block;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #2a5f68, transparent);
+    animation: loadSlide 1.2s ease-in-out infinite;
+  }
+
+  @keyframes loadSlide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+  }
+
+  /* Legend/info tooltip */
+  .map-info {
+    position: absolute;
+    bottom: 30px;
+    left: 14px;
+    padding: 10px 14px;
+    background: rgba(245, 239, 228, 0.92);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid rgba(36, 31, 25, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: #595146;
+    z-index: 10;
+    max-width: 320px;
+  }
+
+  .map-info strong { color: #171411; }
+</style>
+</head>
+<body>
+
+<div id="loading" class="loading-bar active"></div>
+<div id="map"></div>
+
+<div class="panel" id="panel">
+  <div class="panel-header">
+    <span class="panel-title">Map layers</span>
+    <span style="cursor:pointer;font-size:16px;color:#8a7f71" id="panel-close">&times;</span>
+  </div>
+
+  <div class="panel-group">
+    <div class="panel-group-label">Boundaries</div>
+    <div class="layer-row" data-layer="municipal">
+      <div class="layer-swatch" style="background:rgba(183,90,30,0.5);box-shadow:0 0 6px rgba(183,90,30,0.4)"></div>
+      <span class="layer-label">Municipal boundaries</span>
+      <div class="layer-toggle active"></div>
+    </div>
+    <div class="layer-row" data-layer="county">
+      <div class="layer-swatch" style="background:#2a5f68"></div>
+      <span class="layer-label">County / region lines</span>
+      <div class="layer-toggle active"></div>
+    </div>
+    <div class="layer-row" data-layer="islands">
+      <div class="layer-swatch" style="background:conic-gradient(#e8a0a0,#c0d8a0,#a0b8d8,#d8a0c0,#e8a0a0);border-radius:50%"></div>
+      <span class="layer-label">Activity islands</span>
+      <div class="layer-toggle"></div>
+    </div>
+  </div>
+
+  <div class="panel-group">
+    <div class="panel-group-label">Infrastructure</div>
+    <div class="layer-row" data-layer="roads">
+      <div class="layer-swatch" style="background:#595146"></div>
+      <span class="layer-label">Road hierarchy</span>
+      <div class="layer-toggle active"></div>
+    </div>
+    <div class="layer-row" data-layer="rail">
+      <div class="layer-swatch" style="background:#4a2810;background-image:repeating-linear-gradient(90deg,#4a2810 0 4px,transparent 4px 7px)"></div>
+      <span class="layer-label">Rail corridors</span>
+      <div class="layer-toggle active"></div>
+    </div>
+    <div class="layer-row" data-layer="roadgrid">
+      <div class="layer-swatch" style="background:conic-gradient(#d4b896,#a8c4b0,#b0a8d8,#c8a0a8,#d4b896);border-radius:50%"></div>
+      <span class="layer-label">Survey grid (approx.)</span>
+      <div class="layer-toggle"></div>
+    </div>
+  </div>
+
+  <div class="panel-group">
+    <div class="panel-group-label">Geography</div>
+    <div class="layer-row" data-layer="escarpment" id="row-escarpment">
+      <div class="layer-swatch" style="background:rgba(60,120,80,0.5)"></div>
+      <span class="layer-label">Niagara Escarpment</span>
+      <div class="layer-toggle active"></div>
+    </div>
+    <div class="layer-row" data-layer="conservation" id="row-conservation">
+      <div class="layer-swatch" style="background:rgba(42,95,104,0.25)"></div>
+      <span class="layer-label">Conservation authorities</span>
+      <div class="layer-toggle active"></div>
+    </div>
+  </div>
+</div>
+
+<button class="panel-toggle-btn" id="panel-open">&#9776;</button>
+
+<div class="map-info" id="map-info">
+  <strong>Niagara Peninsula Corridor</strong> &mdash; Hamilton through Niagara to the border. Toggle layers above.
+</div>
+
+<script>
+(function() {
+  "use strict";
+
+  // Map bounds: Port Rowan (SW) to Guelph/Oakville (NE)
+  var CENTER = [-80.05, 43.10];
+  var ZOOM = 9;
+  var BOUNDS = [[-80.70, 42.50], [-79.45, 43.65]];
+
+  // Layer group definitions
+  var LAYER_GROUPS = {
+    municipal: [],
+    county: [],
+    islands: [],
+    roads: [],
+    rail: [],
+    roadgrid: [],
+    escarpment: [],
+    conservation: []
+  };
+
+  // Initialize map
+  var map = new maplibregl.Map({
+    container: "map",
+    style: "https://tiles.openfreemap.org/styles/liberty",
+    center: CENTER,
+    zoom: ZOOM,
+    maxBounds: [[-81.5, 41.8], [-78.5, 44.2]],
+    attributionControl: true
+  });
+
+  map.addControl(new maplibregl.NavigationControl(), "bottom-right");
+
+  // After style loads, add custom layers
+  map.on("load", function() {
+    document.getElementById("loading").classList.remove("active");
+
+    addBoundaryLayers();
+    addActivityIslands();
+    addConcessionGrid();
+    addRoadLayers();
+    addRailLayers();
+    addEscarpment();
+    addConservation();
+    wireControls();
+  });
+
+  // =============================================
+  // MUNICIPAL BOUNDARY GLOW (from vector tiles)
+  // =============================================
+  function addBoundaryLayers() {
+    // Find the first label layer to insert below
+    var labelLayer = findLabelLayer();
+
+    // Municipal boundaries — glow (wide, blurred)
+    map.addLayer({
+      id: "municipal-glow-outer",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "boundary",
+      filter: ["all", ["==", "admin_level", 8], ["!has", "maritime"]],
+      paint: {
+        "line-color": "rgba(183, 90, 30, 0.12)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 6, 10, 14, 13, 20],
+        "line-blur": ["interpolate", ["linear"], ["zoom"], 7, 8, 10, 12, 13, 16]
+      },
+      minzoom: 7
+    }, labelLayer);
+    LAYER_GROUPS.municipal.push("municipal-glow-outer");
+
+    // Municipal boundaries — glow (inner)
+    map.addLayer({
+      id: "municipal-glow-inner",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "boundary",
+      filter: ["all", ["==", "admin_level", 8], ["!has", "maritime"]],
+      paint: {
+        "line-color": "rgba(183, 90, 30, 0.2)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 2, 10, 5, 13, 8],
+        "line-blur": ["interpolate", ["linear"], ["zoom"], 7, 4, 10, 5, 13, 6]
+      },
+      minzoom: 7
+    }, labelLayer);
+    LAYER_GROUPS.municipal.push("municipal-glow-inner");
+
+    // Municipal boundaries — crisp line
+    map.addLayer({
+      id: "municipal-line",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "boundary",
+      filter: ["all", ["==", "admin_level", 8], ["!has", "maritime"]],
+      paint: {
+        "line-color": "rgba(183, 90, 30, 0.35)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 0.4, 10, 0.8, 13, 1.2],
+        "line-dasharray": [4, 2]
+      },
+      minzoom: 7
+    }, labelLayer);
+    LAYER_GROUPS.municipal.push("municipal-line");
+
+    // County / regional municipality boundaries — strong line
+    map.addLayer({
+      id: "county-glow",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "boundary",
+      filter: ["all", ["==", "admin_level", 6], ["!has", "maritime"]],
+      paint: {
+        "line-color": "rgba(42, 95, 104, 0.15)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 8, 10, 14, 13, 18],
+        "line-blur": ["interpolate", ["linear"], ["zoom"], 7, 6, 10, 10, 13, 14]
+      },
+      minzoom: 6
+    }, labelLayer);
+    LAYER_GROUPS.county.push("county-glow");
+
+    map.addLayer({
+      id: "county-line",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "boundary",
+      filter: ["all", ["==", "admin_level", 6], ["!has", "maritime"]],
+      paint: {
+        "line-color": "#2a5f68",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 1, 10, 1.8, 13, 2.5],
+        "line-opacity": 0.6
+      },
+      minzoom: 6
+    }, labelLayer);
+    LAYER_GROUPS.county.push("county-line");
+  }
+
+  // =============================================
+  // ROAD HIERARCHY (enhanced from vector tiles)
+  // =============================================
+  function addRoadLayers() {
+    var labelLayer = findLabelLayer();
+
+    // Tertiary roads
+    map.addLayer({
+      id: "roads-tertiary",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      filter: ["all", ["==", "class", "tertiary"]],
+      paint: {
+        "line-color": "rgba(89, 81, 70, 0.4)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 9, 0.4, 11, 1.2, 13, 2.5, 15, 4]
+      },
+      minzoom: 9
+    }, labelLayer);
+    LAYER_GROUPS.roads.push("roads-tertiary");
+
+    // Minor / residential / unclassified roads
+    map.addLayer({
+      id: "roads-minor",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      filter: ["any", ["==", "class", "minor"], ["==", "class", "service"], ["==", "class", "street"]],
+      paint: {
+        "line-color": "rgba(89, 81, 70, 0.3)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 0.3, 13, 1.2, 15, 2.5]
+      },
+      minzoom: 11
+    }, labelLayer);
+    LAYER_GROUPS.roads.push("roads-minor");
+
+    // Secondary roads
+    map.addLayer({
+      id: "roads-secondary",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      filter: ["all", ["==", "class", "secondary"]],
+      paint: {
+        "line-color": "rgba(89, 81, 70, 0.5)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 0.6, 10, 1.8, 13, 3.5, 15, 5]
+      },
+      minzoom: 7
+    }, labelLayer);
+    LAYER_GROUPS.roads.push("roads-secondary");
+
+    // Primary roads
+    map.addLayer({
+      id: "roads-primary",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      filter: ["all", ["==", "class", "primary"]],
+      paint: {
+        "line-color": "rgba(100, 75, 45, 0.7)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 1.4, 10, 3.5, 13, 6, 15, 8]
+      },
+      minzoom: 6
+    }, labelLayer);
+    LAYER_GROUPS.roads.push("roads-primary");
+
+    // Trunk + motorway casing
+    map.addLayer({
+      id: "roads-highway-casing",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      filter: ["any", ["==", "class", "motorway"], ["==", "class", "trunk"]],
+      paint: {
+        "line-color": "rgba(123, 75, 34, 0.35)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 6, 4, 10, 10, 13, 14],
+        "line-blur": ["interpolate", ["linear"], ["zoom"], 6, 2, 10, 4, 13, 5]
+      },
+      minzoom: 5
+    }, labelLayer);
+    LAYER_GROUPS.roads.push("roads-highway-casing");
+
+    // Trunk + motorway
+    map.addLayer({
+      id: "roads-highway",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      filter: ["any", ["==", "class", "motorway"], ["==", "class", "trunk"]],
+      paint: {
+        "line-color": "#7b4b22",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1.4, 10, 3, 13, 5],
+        "line-opacity": 0.8
+      },
+      minzoom: 5
+    }, labelLayer);
+    LAYER_GROUPS.roads.push("roads-highway");
+  }
+
+  // =============================================
+  // RAIL CORRIDORS (from vector tiles)
+  // =============================================
+  function addRailLayers() {
+    var labelLayer = findLabelLayer();
+
+    // Rail glow
+    map.addLayer({
+      id: "rail-glow",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      filter: ["==", "class", "rail"],
+      paint: {
+        "line-color": "rgba(74, 40, 16, 0.12)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 4, 10, 8, 13, 12],
+        "line-blur": ["interpolate", ["linear"], ["zoom"], 7, 4, 10, 6, 13, 8]
+      },
+      minzoom: 7
+    }, labelLayer);
+    LAYER_GROUPS.rail.push("rail-glow");
+
+    // Rail line
+    map.addLayer({
+      id: "rail-line",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      filter: ["==", "class", "rail"],
+      paint: {
+        "line-color": "#4a2810",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 0.8, 10, 1.5, 13, 2.2],
+        "line-opacity": 0.65
+      },
+      minzoom: 7
+    }, labelLayer);
+    LAYER_GROUPS.rail.push("rail-line");
+
+    // Rail cross-hatches
+    map.addLayer({
+      id: "rail-hatches",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      filter: ["==", "class", "rail"],
+      paint: {
+        "line-color": "#4a2810",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 7, 3, 10, 5, 13, 7],
+        "line-dasharray": [0.2, 2],
+        "line-opacity": 0.35
+      },
+      minzoom: 8
+    }, labelLayer);
+    LAYER_GROUPS.rail.push("rail-hatches");
+  }
+
+  // =============================================
+  // ACTIVITY ISLANDS (landuse polygons, random colors)
+  // =============================================
+  function addActivityIslands() {
+    var firstSymbol = findLabelLayer();
+
+    // Color each landuse polygon by feature ID — cycles through a rainbow
+    // Uses modulo on feature ID for pseudo-random hue distribution
+    var colorExpr = [
+      "interpolate-hcl", ["linear"],
+      ["%", ["id"], 41],
+      0,  "#d4726a",
+      6,  "#d4a86a",
+      12, "#c8d46a",
+      18, "#6ad4a0",
+      24, "#6ab4d4",
+      30, "#7c6ad4",
+      36, "#d46abc",
+      40, "#d47272"
+    ];
+
+    // Fallback: if id is 0 for all features (some tile servers),
+    // use class-based coloring instead
+    var classColor = [
+      "match", ["get", "class"],
+      "residential",    "#d4936a",
+      "commercial",     "#6aacd4",
+      "industrial",     "#d4c46a",
+      "retail",         "#d46a8c",
+      "railway",        "#8c6ad4",
+      "cemetery",       "#a0b490",
+      "park",           "#6ad48c",
+      "forest",         "#4aaa6a",
+      "grass",          "#8cd46a",
+      "farmland",       "#ccd480",
+      "farm",           "#c4cc7a",
+      "meadow",         "#a8d47a",
+      "scrub",          "#90b870",
+      "hospital",       "#d46a6a",
+      "school",         "#6a8cd4",
+      "university",     "#7a6ad4",
+      "military",       "#a06a6a",
+      "pitch",          "#5cc890",
+      "swimming_pool",  "#6ac4d4",
+      "dam",            "#7090a0",
+      "quarry",         "#a09080",
+      "#b0a898"
+    ];
+
+    // Use ID-based colors; the coalesce handles tiles without feature IDs
+    map.addLayer({
+      id: "islands-fill",
+      type: "fill",
+      source: "openmaptiles",
+      "source-layer": "landuse",
+      paint: {
+        "fill-color": [
+          "case",
+          ["!=", ["id"], 0], colorExpr,
+          classColor
+        ],
+        "fill-opacity": 0.28
+      },
+      layout: { "visibility": "none" }
+    }, firstSymbol);
+    LAYER_GROUPS.islands.push("islands-fill");
+
+    map.addLayer({
+      id: "islands-line",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "landuse",
+      paint: {
+        "line-color": [
+          "case",
+          ["!=", ["id"], 0], colorExpr,
+          classColor
+        ],
+        "line-width": 0.6,
+        "line-opacity": 0.35
+      },
+      layout: { "visibility": "none" }
+    }, firstSymbol);
+    LAYER_GROUPS.islands.push("islands-line");
+  }
+
+  // =============================================
+  // CONCESSION GRID (turf.polygonize from roads)
+  // =============================================
+  function addConcessionGrid() {
+    map.addSource("road-grid", { type: "geojson", data: buildGridData() });
+
+    var firstSymbol = findLabelLayer();
+
+    map.addLayer({
+      id: "roadgrid-fill",
+      type: "fill",
+      source: "road-grid",
+      paint: {
+        "fill-color": ["get", "fill"],
+        "fill-opacity": 0.22
+      },
+      layout: { "visibility": "none" },
+      minzoom: 8.5,
+      maxzoom: 12.5
+    }, firstSymbol);
+    LAYER_GROUPS.roadgrid.push("roadgrid-fill");
+
+    map.addLayer({
+      id: "roadgrid-line",
+      type: "line",
+      source: "road-grid",
+      paint: {
+        "line-color": ["get", "fill"],
+        "line-width": 0.5,
+        "line-opacity": 0.3
+      },
+      layout: { "visibility": "none" },
+      minzoom: 8.5,
+      maxzoom: 12.5
+    }, firstSymbol);
+    LAYER_GROUPS.roadgrid.push("roadgrid-line");
+
+    // Road-edge glow: wide blurred halos on major roads, visible only with grid
+    var glowDefs = [
+      { id: "gridglow-highway", filter: ["any", ["==","class","motorway"], ["==","class","trunk"]],
+        color: "rgba(183, 130, 60, 0.14)", width: 28, blur: 18 },
+      { id: "gridglow-primary", filter: ["==","class","primary"],
+        color: "rgba(183, 120, 50, 0.10)", width: 22, blur: 14 },
+      { id: "gridglow-secondary", filter: ["==","class","secondary"],
+        color: "rgba(170, 120, 70, 0.08)", width: 16, blur: 10 }
+    ];
+
+    glowDefs.forEach(function(g) {
+      map.addLayer({
+        id: g.id,
+        type: "line",
+        source: "openmaptiles",
+        "source-layer": "transportation",
+        filter: g.filter,
+        paint: {
+          "line-color": g.color,
+          "line-width": ["interpolate", ["linear"], ["zoom"], 8.5, g.width * 0.6, 10, g.width, 12.5, g.width * 1.4],
+          "line-blur": ["interpolate", ["linear"], ["zoom"], 8.5, g.blur * 0.7, 10, g.blur, 12.5, g.blur * 1.3]
+        },
+        layout: { "visibility": "none" },
+        minzoom: 8.5,
+        maxzoom: 12.5
+      }, "roadgrid-fill");
+      LAYER_GROUPS.roadgrid.push(g.id);
+    });
+  }
+
+  function buildGridData() {
+    // Ontario concession grid: ~2km cells
+    // At 43°N: lng 0.025° ≈ 2km, lat 0.018° ≈ 2km
+    var LNG_STEP = 0.025;
+    var LAT_STEP = 0.018;
+    var W = -81.20, S = 42.35, E = -78.85, N = 43.80;
+
+    var palette = [
+      "#dbb89e", "#c8c49a", "#aac8a0", "#9ac4b8", "#9ab4c8",
+      "#a8a4c8", "#c0a0b8", "#c8a89a", "#b8c0a0", "#a0c8b0",
+      "#b0b0c8", "#c4a4a8", "#c8b8a0", "#a4b8a4", "#a0b0b8",
+      "#b4a8c0", "#c0b0a0", "#a8c0a8", "#b8a8b0", "#a4c0c0",
+      "#c8a8b8", "#b0c4a4", "#a8b0c4", "#c0b4a8", "#b4b8a0",
+      "#a8b8c4", "#c4b0b0", "#b0c0b4", "#c0a8b0", "#b8b4c0"
+    ];
+
+    var features = [];
+    for (var lng = W; lng < E; lng += LNG_STEP) {
+      for (var lat = S; lat < N; lat += LAT_STEP) {
+        var h = Math.abs(Math.sin(lng * 73856.1053 + lat * 19349.6691) * 43758.5453);
+        var ci = Math.floor((h - Math.floor(h)) * palette.length);
+        features.push({
+          type: "Feature",
+          properties: { fill: palette[ci] },
+          geometry: {
+            type: "Polygon",
+            coordinates: [[
+              [lng, lat], [lng + LNG_STEP, lat],
+              [lng + LNG_STEP, lat + LAT_STEP], [lng, lat + LAT_STEP],
+              [lng, lat]
+            ]]
+          }
+        });
+      }
+    }
+    return { type: "FeatureCollection", features: features };
+  }
+
+  // =============================================
+  // NIAGARA ESCARPMENT (simplified, no fetch)
+  // =============================================
+  function addEscarpment() {
+    var escarpmentLine = {
+      type: "FeatureCollection",
+      features: [{
+        type: "Feature",
+        properties: { name: "Niagara Escarpment" },
+        geometry: {
+          type: "LineString",
+          coordinates: [
+            [-79.05, 43.155], [-79.08, 43.17], [-79.12, 43.19], [-79.18, 43.21],
+            [-79.24, 43.225], [-79.32, 43.235], [-79.40, 43.24], [-79.52, 43.245],
+            [-79.60, 43.255], [-79.68, 43.26], [-79.76, 43.265], [-79.80, 43.265],
+            [-79.84, 43.265], [-79.87, 43.275], [-79.89, 43.285], [-79.90, 43.30],
+            [-79.91, 43.32], [-79.92, 43.34], [-79.925, 43.36], [-79.93, 43.38],
+            [-79.94, 43.40], [-79.96, 43.42], [-79.98, 43.44], [-80.00, 43.46],
+            [-80.04, 43.48], [-80.10, 43.50], [-80.16, 43.51], [-80.22, 43.52],
+            [-80.30, 43.525], [-80.38, 43.53], [-80.42, 43.535], [-80.48, 43.54],
+            [-80.52, 43.545], [-80.56, 43.55]
+          ]
+        }
+      }]
+    };
+
+    map.addSource("escarpment", { type: "geojson", data: escarpmentLine });
+    var labelLayer = findLabelLayer();
+
+    map.addLayer({
+      id: "escarpment-glow",
+      type: "line",
+      source: "escarpment",
+      paint: {
+        "line-color": "rgba(60, 120, 80, 0.12)",
+        "line-width": 20,
+        "line-blur": 14
+      }
+    }, labelLayer);
+    LAYER_GROUPS.escarpment.push("escarpment-glow");
+
+    map.addLayer({
+      id: "escarpment-line",
+      type: "line",
+      source: "escarpment",
+      paint: {
+        "line-color": "rgba(60, 120, 80, 0.55)",
+        "line-width": 2.5,
+        "line-dasharray": [6, 3]
+      }
+    }, labelLayer);
+    LAYER_GROUPS.escarpment.push("escarpment-line");
+
+    document.getElementById("row-escarpment").querySelector(".layer-label").textContent = "Niagara Escarpment (approx.)";
+  }
+
+  // =============================================
+  // CONSERVATION AUTHORITIES (unavailable — CORS-blocked)
+  // =============================================
+  function addConservation() {
+    var row = document.getElementById("row-conservation");
+    row.querySelector(".layer-label").textContent = "Conservation areas (unavailable)";
+    row.querySelector(".layer-toggle").classList.remove("active");
+    row.classList.add("disabled");
+    row.querySelector(".layer-label").style.fontStyle = "italic";
+  }
+
+  // =============================================
+  // UTILITY FUNCTIONS
+  // =============================================
+  function findLabelLayer() {
+    var layers = map.getStyle().layers;
+    for (var i = 0; i < layers.length; i++) {
+      if (layers[i].type === "symbol" && layers[i].id.indexOf("label") !== -1) {
+        return layers[i].id;
+      }
+    }
+    // Try finding any symbol layer
+    for (var j = 0; j < layers.length; j++) {
+      if (layers[j].type === "symbol") return layers[j].id;
+    }
+    return undefined;
+  }
+
+  // =============================================
+  // LAYER CONTROLS
+  // =============================================
+  var GRID_ZOOM = 10;
+
+  function wireControls() {
+    var rows = document.querySelectorAll(".layer-row");
+    rows.forEach(function(row) {
+      row.addEventListener("click", function() {
+        if (row.classList.contains("disabled")) return;
+        var toggle = row.querySelector(".layer-toggle");
+        var layerKey = row.getAttribute("data-layer");
+        var isActive = toggle.classList.contains("active");
+
+        toggle.classList.toggle("active");
+        var newVisibility = isActive ? "none" : "visible";
+
+        var layerIds = LAYER_GROUPS[layerKey] || [];
+        layerIds.forEach(function(id) {
+          if (map.getLayer(id)) {
+            map.setLayoutProperty(id, "visibility", newVisibility);
+          }
+        });
+
+        // Concession grid: force zoom into visible range
+        if (layerKey === "roadgrid" && !isActive) {
+          var z = map.getZoom();
+          if (z < 8.5 || z > 12.5) {
+            map.easeTo({ zoom: GRID_ZOOM, duration: 800 });
+          }
+        }
+      });
+    });
+
+    // Panel toggle
+    document.getElementById("panel-close").addEventListener("click", function() {
+      document.getElementById("panel").classList.add("collapsed");
+    });
+    document.getElementById("panel-open").addEventListener("click", function() {
+      document.getElementById("panel").classList.remove("collapsed");
+    });
+  }
+
+  // =============================================
+  // HOVER INFO
+  // =============================================
+  map.on("mousemove", function(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+      layers: ["county-line", "municipal-line"]
+    });
+
+    if (features.length > 0) {
+      var f = features[0];
+      var name = f.properties.name || f.properties.NAME || "";
+      if (name) {
+        document.getElementById("map-info").innerHTML =
+          "<strong>" + escHtml(name) + "</strong>";
+        map.getCanvas().style.cursor = "pointer";
+        return;
+      }
+    }
+
+    // Check activity islands (landuse)
+    if (map.getLayer("islands-fill") && map.getLayoutProperty("islands-fill", "visibility") === "visible") {
+      var luFeatures = map.queryRenderedFeatures(e.point, { layers: ["islands-fill"] });
+      if (luFeatures.length > 0) {
+        var luClass = luFeatures[0].properties.class || "";
+        if (luClass) {
+          var label = luClass.charAt(0).toUpperCase() + luClass.slice(1).replace(/_/g, " ");
+          document.getElementById("map-info").innerHTML =
+            "<strong>" + escHtml(label) + "</strong> &mdash; land use";
+          map.getCanvas().style.cursor = "pointer";
+          return;
+        }
+      }
+    }
+
+    map.getCanvas().style.cursor = "";
+    document.getElementById("map-info").innerHTML =
+      "<strong>Niagara Peninsula Corridor</strong> &mdash; Hamilton through Niagara to the border. Toggle layers above.";
+  });
+
+  function escHtml(s) {
+    var d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+})();
+</script>
+</body>
+</html>
