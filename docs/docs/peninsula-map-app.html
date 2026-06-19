@@ -661,7 +661,7 @@
       source: "road-grid",
       paint: {
         "fill-color": ["get", "fill"],
-        "fill-opacity": 0.22
+        "fill-opacity": 0.32
       },
       layout: { "visibility": "none" },
       minzoom: 8.5,
@@ -674,9 +674,9 @@
       type: "line",
       source: "road-grid",
       paint: {
-        "line-color": ["get", "fill"],
-        "line-width": 0.5,
-        "line-opacity": 0.3
+        "line-color": "rgba(60, 50, 35, 0.18)",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 8.5, 0.4, 10, 0.7, 12.5, 1],
+        "line-opacity": 1
       },
       layout: { "visibility": "none" },
       minzoom: 8.5,
@@ -684,14 +684,26 @@
     }, firstSymbol);
     LAYER_GROUPS.roadgrid.push("roadgrid-line");
 
-    // Road-edge glow: wide blurred halos on major roads, visible only with grid
+    // Road-edge glow: dual-layer (wide ambient wash + tight hot core)
     var glowDefs = [
-      { id: "gridglow-highway", filter: ["any", ["==","class","motorway"], ["==","class","trunk"]],
-        color: "rgba(183, 130, 60, 0.14)", width: 28, blur: 18 },
-      { id: "gridglow-primary", filter: ["==","class","primary"],
-        color: "rgba(183, 120, 50, 0.10)", width: 22, blur: 14 },
-      { id: "gridglow-secondary", filter: ["==","class","secondary"],
-        color: "rgba(170, 120, 70, 0.08)", width: 16, blur: 10 }
+      // Highway — wide ambient
+      { id: "gridglow-hw-ambient", filter: ["any", ["==","class","motorway"], ["==","class","trunk"]],
+        color: "rgba(190, 130, 40, 0.18)", width: [40, 55, 70], blur: [24, 32, 40] },
+      // Highway — hot core
+      { id: "gridglow-hw-core", filter: ["any", ["==","class","motorway"], ["==","class","trunk"]],
+        color: "rgba(200, 140, 50, 0.25)", width: [14, 20, 28], blur: [8, 12, 16] },
+      // Primary — ambient
+      { id: "gridglow-pri-ambient", filter: ["==","class","primary"],
+        color: "rgba(180, 120, 45, 0.14)", width: [28, 40, 52], blur: [18, 24, 30] },
+      // Primary — hot core
+      { id: "gridglow-pri-core", filter: ["==","class","primary"],
+        color: "rgba(190, 130, 50, 0.20)", width: [10, 16, 22], blur: [6, 10, 13] },
+      // Secondary — ambient
+      { id: "gridglow-sec-ambient", filter: ["==","class","secondary"],
+        color: "rgba(170, 115, 55, 0.10)", width: [18, 28, 38], blur: [12, 18, 22] },
+      // Secondary — core
+      { id: "gridglow-sec-core", filter: ["==","class","secondary"],
+        color: "rgba(180, 125, 55, 0.15)", width: [8, 12, 16], blur: [5, 7, 10] }
     ];
 
     glowDefs.forEach(function(g) {
@@ -703,8 +715,8 @@
         filter: g.filter,
         paint: {
           "line-color": g.color,
-          "line-width": ["interpolate", ["linear"], ["zoom"], 8.5, g.width * 0.6, 10, g.width, 12.5, g.width * 1.4],
-          "line-blur": ["interpolate", ["linear"], ["zoom"], 8.5, g.blur * 0.7, 10, g.blur, 12.5, g.blur * 1.3]
+          "line-width": ["interpolate", ["linear"], ["zoom"], 8.5, g.width[0], 10, g.width[1], 12.5, g.width[2]],
+          "line-blur": ["interpolate", ["linear"], ["zoom"], 8.5, g.blur[0], 10, g.blur[1], 12.5, g.blur[2]]
         },
         layout: { "visibility": "none" },
         minzoom: 8.5,
@@ -722,12 +734,12 @@
     var W = -81.20, S = 42.35, E = -78.85, N = 43.80;
 
     var palette = [
-      "#dbb89e", "#c8c49a", "#aac8a0", "#9ac4b8", "#9ab4c8",
-      "#a8a4c8", "#c0a0b8", "#c8a89a", "#b8c0a0", "#a0c8b0",
-      "#b0b0c8", "#c4a4a8", "#c8b8a0", "#a4b8a4", "#a0b0b8",
-      "#b4a8c0", "#c0b0a0", "#a8c0a8", "#b8a8b0", "#a4c0c0",
-      "#c8a8b8", "#b0c4a4", "#a8b0c4", "#c0b4a8", "#b4b8a0",
-      "#a8b8c4", "#c4b0b0", "#b0c0b4", "#c0a8b0", "#b8b4c0"
+      "#d4956a", "#c8b460", "#88c470", "#60c4a0", "#60a4c8",
+      "#8878c8", "#b868a8", "#cc8858", "#90b860", "#60c890",
+      "#7888cc", "#c07078", "#c8a458", "#68a878", "#6090b8",
+      "#9870b4", "#b89060", "#70b480", "#a87898", "#60b0b4",
+      "#c478a0", "#88b870", "#7090c4", "#b8986c", "#98a860",
+      "#78a8c0", "#b88888", "#80b498", "#b07898", "#9898b8"
     ];
 
     var features = [];
