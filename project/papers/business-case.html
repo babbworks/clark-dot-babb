@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Case: Clark &amp; Niagara Assembly</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #2d5a27;
+    --accent-light: #e8f0e6;
+    --border: #d4d0c8;
+    --table-stripe: #f5f4f0;
+    --code-bg: #f0ede6;
+    --nav-bg: #2c2c2c;
+    --nav-text: #e0e0e0;
+    --highlight: #fff3cd;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    font-family: 'Charter', 'Georgia', 'Times New Roman', serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  /* Navigation */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--nav-bg);
+    color: var(--nav-text);
+    z-index: 100;
+    border-bottom: 2px solid var(--accent);
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-brand {
+    padding: 12px 20px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .nav-inner a {
+    display: block;
+    padding: 12px 14px;
+    color: var(--nav-text);
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav-inner a:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border-bottom-color: var(--accent);
+  }
+
+  /* Main content */
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 100px 24px 120px;
+  }
+
+  /* Title block */
+  .title-block {
+    margin-bottom: 56px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid var(--text);
+  }
+
+  .title-block h1 {
+    font-size: 36px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .title-block .subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* Section headings */
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 72px 0 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 21px;
+    font-weight: 700;
+    margin: 48px 0 16px;
+    color: var(--accent);
+  }
+
+  h4 {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 32px 0 12px;
+  }
+
+  p { margin-bottom: 16px; }
+
+  strong { font-weight: 700; }
+
+  em { font-style: italic; }
+
+  /* Horizontal rules */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 28px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  thead th {
+    background: var(--nav-bg);
+    color: #fff;
+    text-align: left;
+    padding: 10px 12px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tbody tr:nth-child(even) { background: var(--table-stripe); }
+
+  /* Code / diagram blocks */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 20px 0 28px;
+    white-space: pre;
+  }
+
+  /* Lists */
+  ul, ol {
+    margin: 12px 0 20px 24px;
+  }
+
+  li {
+    margin-bottom: 6px;
+  }
+
+  li ul, li ol { margin-top: 6px; margin-bottom: 6px; }
+
+  /* Gap callouts */
+  .gap {
+    background: var(--highlight);
+    border-left: 4px solid #e6a817;
+    padding: 12px 16px;
+    margin: 16px 0 20px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* Blockquotes for honest caveats */
+  blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 12px 20px;
+    margin: 16px 0 20px;
+    background: var(--accent-light);
+    font-size: 15px;
+  }
+
+  /* Back to top */
+  .top-link {
+    display: inline-block;
+    margin-top: 24px;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  .top-link:hover { color: var(--accent); }
+
+  /* Section numbers */
+  .section-num {
+    color: var(--muted);
+    font-size: 14px;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    display: block;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    main { padding: 80px 16px 80px; }
+    .title-block h1 { font-size: 28px; }
+    h2 { font-size: 24px; }
+    table { font-size: 13px; }
+    thead th, tbody td { padding: 8px; }
+    pre { font-size: 11px; padding: 12px; }
+  }
+
+  /* Print */
+  @media print {
+    nav { display: none; }
+    main { padding: 0; max-width: 100%; }
+    h2 { page-break-before: always; }
+    table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">Clark</div>
+    <a href="#section-1">1. Two Entities</a>
+    <a href="#section-2">2. Demand</a>
+    <a href="#section-3">3. Clark</a>
+    <a href="#section-4">4. Niagara Assembly</a>
+    <a href="#section-5">5. Corridor</a>
+    <a href="#section-6">6. Tailwinds</a>
+    <a href="#section-7">7. Gaps &amp; Risks</a>
+  </div>
+</nav>
+
+<main>
+
+<div class="title-block">
+  <h1>Business Case: Clark &amp; Niagara Assembly</h1>
+  <div class="subtitle">Working document &mdash; built section by section, June 2026</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1 -->
+<!-- ============================================================ -->
+
+<h2 id="section-1"><span class="section-num">Section 1</span>Two Entities, Two Cases</h2>
+
+<p>Clark and Niagara Assembly are distinct entities with distinct business models, linked by a shared thesis: that the Anglosphere's industrial regions have the land, the infrastructure, and the policy intent to rebuild production capacity &mdash; but lack the coordination layer that converts intent into ecosystems.</p>
+
+<h3>Clark &mdash; The Activation Protocol</h3>
+
+<p>Clark is a methodology company. Its etymological root is <em>clerk</em> &mdash; the record creator and keeper &mdash; and this is its operational core. Clark activates awareness of industrial opportunity, helps communities prioritize actionable observations about their local economies, and provides the software, documentation standards, and institutional knowledge that Centers for Education, Assembly and Investment need to operate.</p>
+
+<h4>What Clark does:</h4>
+<ul>
+  <li>Demonstrates opportunities through field reports and published evidence</li>
+  <li>Catalyzes inclusive dialogues among industry, workforce, and financial leaders</li>
+  <li>Provides Clarkware &mdash; the software layer for observation, evidence capture, and registry management</li>
+  <li>Licenses the activation protocol methodology to regional centers</li>
+  <li>Maintains the claims register and evidence standards that give the network credibility</li>
+  <li>Advises on M&amp;A strategy and ecosystem composition</li>
+</ul>
+
+<h4>What Clark does not do:</h4>
+<ul>
+  <li>Operate training benches directly (centers do this)</li>
+  <li>Perform assembly runs (centers do this)</li>
+  <li>Sell tools or materials (centers do this)</li>
+  <li>Take majority ownership of regional operations (minority equity, methodology licensing)</li>
+</ul>
+
+<p><strong>Clark's arrival in a region is lighter than a traditional franchise launch.</strong> It begins with observation and conversation &mdash; field reports that document what exists, dialogues that surface what's missing, and a demonstrated methodology that local leaders can adopt. The center emerges from these conversations; Clark does not impose it.</p>
+
+<h4>Revenue model:</h4>
+<ul>
+  <li>Clarkware subscriptions (per-center SaaS)</li>
+  <li>Methodology licensing fees (per-center, annual)</li>
+  <li>Field report and evidence publication (establishes authority; may generate consulting inbound)</li>
+  <li>Advisory fees for M&amp;A strategy and ecosystem planning</li>
+  <li>Minority equity positions in centers (long-term value, not operating revenue)</li>
+</ul>
+
+<p><strong>Cost structure:</strong> Light &mdash; software development, a small team of field analysts and protocol designers, travel, and publishing infrastructure. Clark is not capital-intensive.</p>
+
+<hr>
+
+<h3>Niagara Assembly &mdash; Center for Education, Assembly and Investment</h3>
+
+<p>Niagara Assembly is the first proposed Center for Education, Assembly and Investment operating under the Clark protocol. It is a physical entity rooted in the Hamilton&ndash;Niagara corridor, following the &ldquo;common character, regionally responsive&rdquo; model &mdash; meaning it shares Clark's methodology and standards while adapting to the specific industrial landscape, workforce, and institutional relationships of its region.</p>
+
+<h4>Four revenue pillars:</h4>
+
+<p><strong>Pillar 1 &mdash; Training &amp; Education</strong><br>
+IPC-certified and Clark-proprietary training courses delivered from a working electronics assembly bench. Corporate recertification, new certification for workforce entrants, and institutional partnerships with colleges and universities. This is the pillar with the most existing data (see Section 4).</p>
+
+<p><strong>Pillar 2 &mdash; Specialized Small-Batch Assembly</strong><br>
+The center either performs or brokers specialized short-run electronics assembly &mdash; prototype builds, low-volume production, retrofit and rework jobs that are too small for large EMS providers and too complex for in-house attempts.</p>
+
+<p><strong>Pillar 3 &mdash; M&amp;A and Ecosystem Investment</strong><br>
+As the center matures and generates cash flow, it acquires or takes equity positions in small specialized shops performing key roles in electronics, robotics, and production automation. This is the Constellation/HEICO structural principle applied at regional scale.</p>
+
+<p><strong>Pillar 4 &mdash; Tools &amp; Materials Distribution</strong><br>
+Import and resale of tools, equipment, and consumable materials for electronics assembly, robotics, and production automation. This serves both center operations and the broader regional manufacturing base &mdash; becoming the local supply node for the ecosystem Clark is activating.</p>
+
+<p><strong>Cost structure:</strong> Heavier than Clark &mdash; physical space, bench equipment, instructors, inventory for distribution, insurance, and eventually M&amp;A capital. But the bench entry point is deliberately low (~CAD 135K for the first proof case) and scales through revenue rather than requiring large upfront capital.</p>
+
+<hr>
+
+<h3>How They Relate</h3>
+
+<pre>CLARK (methodology + software)
+  |
+  |-- licenses protocol to --> NIAGARA ASSEMBLY (Hamilton-Niagara)
+  |-- licenses protocol to --> [Future Center] (Buffalo-WNY)
+  |-- licenses protocol to --> [Future Center] (UK industrial town)
+  +-- ...
+
+Each center operates four pillars independently.
+Clark provides: Clarkware, methodology, evidence standards, M&A advisory, network effects.
+Centers provide: training, assembly, investment, distribution -- rooted in local relationships.</pre>
+
+<p>The relationship is not a franchise in the fast-food sense. Clark does not dictate operations. It provides the methodology, the software, and the credibility infrastructure. Centers adopt the common character &mdash; the evidence discipline, the claims register, the field report format, the IPC-aligned training standards &mdash; and adapt everything else to their region.</p>
+
+<a href="#" class="top-link">Back to top</a>
+
+<!-- ============================================================ -->
+<!-- SECTION 2 -->
+<!-- ============================================================ -->
+
+<h2 id="section-2"><span class="section-num">Section 2</span>The Regional Demand Picture</h2>
+
+<h3 id="section-2a">2a. Electronics and PCB &mdash; Known Companies</h3>
+
+<p>The electronics and PCB assembly sector is Clark's primary customer base &mdash; the companies whose workforce needs IPC certification, whose production gaps create demand for small-batch assembly, and whose fragmentation creates M&amp;A opportunity.</p>
+
+<h4>Within the Corridor (Burlington &rarr; KW &rarr; Brantford &rarr; Fort Erie)</h4>
+
+<table>
+<thead><tr><th>Company</th><th>Location</th><th>Size</th><th>Capability</th><th>Clark Relevance</th></tr></thead>
+<tbody>
+<tr><td><strong>Artaflex</strong></td><td>Oakville (adj. Burlington)</td><td>~258 employees</td><td>Full EMS: PCB assembly, box build, cable harness. Controlled Goods clearance. AS9100D pending.</td><td>HIGHEST priority. Opened Buffalo facility Jan 2024 &mdash; independently validates corridor logic. Potential anchor customer.</td></tr>
+<tr><td><strong>Brantco Technologies</strong></td><td>Brantford</td><td>Small shop (est. &lt;50)</td><td>PCB assembly</td><td>~35km from Hamilton. IPC training pipeline candidate.</td></tr>
+</tbody>
+</table>
+
+<p><strong>This is the entire known inventory within the defined corridor.</strong> Two companies. The gap is significant &mdash; Hamilton itself has zero profiled electronics manufacturers despite 18,000+ industrial jobs in the Bayfront district alone.</p>
+
+<div class="gap"><strong>GAP:</strong> Hamilton electronics/PCB companies &mdash; requires field research<br>
+<strong>GAP:</strong> KW electronics/PCB companies &mdash; requires desk + field research<br>
+<strong>GAP:</strong> Niagara Peninsula electronics/PCB companies &mdash; requires desk + field research</div>
+
+<h4>Outside the Corridor but Relevant (GTA and Broader Ontario)</h4>
+
+<table>
+<thead><tr><th>Company</th><th>Location</th><th>Size</th><th>Clark Relevance</th></tr></thead>
+<tbody>
+<tr><td><strong>ECI Technology Group</strong></td><td>Scarborough</td><td>Mid-size</td><td>Competitive reference. Defence-electronics demand in GTA.</td></tr>
+<tr><td><strong>Cygnus Electronics</strong></td><td>GTA</td><td>Mid-size</td><td>IPC-certified workforce &mdash; training pipeline.</td></tr>
+<tr><td><strong>MIS Electronics</strong></td><td>Richmond Hill</td><td>50+ employees, ~$15M revenue</td><td>High-priority contact. Immigrant entrepreneur, FedDev funded.</td></tr>
+<tr><td><strong>Permatech Electronics</strong></td><td>GTA (ZTEST/CSE:ZTE)</td><td>Mid-size</td><td>IPC Level 2/3 certified &mdash; recertification demand.</td></tr>
+<tr><td><strong>STIM Canada</strong></td><td>GTA area</td><td>~30 employees, ~$7.5M</td><td>High-priority contact.</td></tr>
+<tr><td><strong>Circuits Central</strong></td><td>Markham</td><td>~$11.9M revenue</td><td>Established regional player.</td></tr>
+<tr><td><strong>Celestica</strong></td><td>Toronto (global HQ)</td><td>~25,000 globally</td><td>Reference only. Too large for direct customer but supply chain creates downstream demand.</td></tr>
+</tbody>
+</table>
+
+<p><strong>Key observation:</strong> The GTA cluster demonstrates Ontario has a functioning electronics manufacturing sector &mdash; but concentrated in the eastern GTA (Markham, Richmond Hill, Scarborough), not in the Hamilton-Niagara corridor. This is precisely the gap Niagara Assembly fills.</p>
+
+<h4>The IPC Training Bottleneck</h4>
+
+<p><strong>EPTAC Markham</strong> is the only IPC Licensed Training Center between Hamilton and Ottawa. Every company in the corridor that needs IPC certification currently depends on this single point. This is a structural bottleneck and a direct market opening for Niagara Assembly's Pillar 1.</p>
+
+<h4>Cross-Border: Buffalo-Rochester-Binghamton (US Side)</h4>
+
+<table>
+<thead><tr><th>Company</th><th>Location</th><th>Size</th><th>Clark Relevance</th></tr></thead>
+<tbody>
+<tr><td><strong>REDCOM EMS</strong></td><td>Victor, NY</td><td>125 employees</td><td>AS9100D, defence-grade EMS, WOSB. Empire State Development funded.</td></tr>
+<tr><td><strong>Creation Technologies/IEC</strong></td><td>Newark, NY</td><td>800+ pre-acquisition</td><td>Full EMS, Nadcap, DLA QTSL. Acquired for $173.8M.</td></tr>
+<tr><td><strong>UEC/ACT</strong></td><td>Rochester</td><td>Specialty</td><td>Thick-film hybrid, AS9100D. Niche capability.</td></tr>
+<tr><td><strong>TCS Electronics</strong></td><td>Farmington, NY</td><td>Mid-size</td><td>ITAR registered. Defence supply chain.</td></tr>
+<tr><td><strong>Mettrix Technology</strong></td><td>Buffalo area</td><td>~25 employees</td><td>Quick-turn, Class 3 capable. Closest to Clark's thesis.</td></tr>
+<tr><td><strong>EMS Technologies</strong></td><td>Binghamton</td><td>7 employees, $6.4M</td><td>57 years operating, IBM legacy. High revenue per employee.</td></tr>
+<tr><td><strong>Endicott Interconnect</strong></td><td>Endicott, NY</td><td>Significant</td><td>World-class PCB fab, DoD qualified, CAMM research center.</td></tr>
+</tbody>
+</table>
+
+<p><strong>Key US findings:</strong> ~70,000 advanced manufacturing employees in Buffalo-Niagara. $88B+ annual freight crossing the gateway. Higher defence intensity than the Ontario side. Quick-turn assembly gap in Buffalo. IBM legacy workforce in Binghamton &mdash; aging, retiring, carrying knowledge that needs transfer.</p>
+
+<hr>
+
+<h3 id="section-2b">2b. Broader Production Entities &mdash; The Ecosystem Clark Serves</h3>
+
+<p>Electronics is the entry vector, but the customers extend across the entire production economy. Every manufacturer that electrifies a process, instruments a line, or needs a control board repaired is a potential training customer, assembly client, or tools-and-materials buyer.</p>
+
+<h4>Hamilton (820 manufacturing companies per D&amp;B; 18,000+ jobs in Bayfront alone)</h4>
+
+<table>
+<thead><tr><th>Company</th><th>Sector</th><th>Size / Revenue</th><th>Clark Relevance</th></tr></thead>
+<tbody>
+<tr><td><strong>ArcelorMittal Dofasco</strong></td><td>Integrated steelmaking</td><td>Hamilton's largest private employer; $8.94B</td><td>Massive automation/instrumentation base. Green steel transition adds electronics density.</td></tr>
+<tr><td><strong>Stelco</strong></td><td>Flat-rolled steel</td><td>Major employer</td><td>Modernization trajectory. Workforce with precision skills adjacent to IPC training.</td></tr>
+<tr><td><strong>National Steel Car</strong></td><td>Railcar manufacturing</td><td>Canada's largest railcar mfr, founded 1912</td><td>Growing embedded-systems content in modern rolling stock.</td></tr>
+<tr><td><strong>Opto-Electronics Inc.</strong></td><td>Opto-electronics</td><td>~$3.6M revenue</td><td><strong>Direct electronics manufacturer in Hamilton.</strong> Needs deeper profiling.</td></tr>
+<tr><td><strong>Edson Packaging Machinery</strong></td><td>Packaging machinery</td><td>~$8.8M revenue; part of Pro Mach</td><td>Electronics-dense robotic packaging systems.</td></tr>
+<tr><td><strong>Walters Group</strong></td><td>Structural steel</td><td>~$72M, ~281 employees, since 1956</td><td>Fourth-generation &mdash; needs workforce renewal.</td></tr>
+</tbody>
+</table>
+
+<div class="gap"><strong>RESEARCH TASK:</strong> Hamilton has 820 manufacturing company profiles in D&amp;B. The above list names ~20. A systematic walk of the Bayfront + cross-referencing with the city's own business directory would surface hundreds more.</div>
+
+<h4>Burlington (785 manufacturing companies per D&amp;B)</h4>
+
+<table>
+<thead><tr><th>Company</th><th>Sector</th><th>Clark Relevance</th></tr></thead>
+<tbody>
+<tr><td><strong>Evertz Microsystems</strong> (TSX: ET)</td><td>Video/audio infrastructure, broadcast/military</td><td>Designs and manufactures electronic equipment. Directly electronics-dependent.</td></tr>
+<tr><td><strong>Cogent Power</strong></td><td>Electrical steel, transformer cores</td><td>Largest transformer core mfr in North America.</td></tr>
+<tr><td><strong>Formula Solutions</strong></td><td>Aerospace composites</td><td>$1.7M government investment for jet engine components.</td></tr>
+<tr><td><strong>GE Aviation</strong></td><td>Aerospace</td><td>Aerospace electronics demand &mdash; avionics, sensors, control systems.</td></tr>
+<tr><td><strong>Parker Hannifin</strong></td><td>Motion and control</td><td>Systems increasingly electronics-controlled.</td></tr>
+</tbody>
+</table>
+
+<h4>Kitchener-Waterloo-Cambridge (1,850+ mfg companies; 49,300 mfg employees &mdash; 4th in Canada)</h4>
+
+<table>
+<thead><tr><th>Company</th><th>Sector</th><th>Clark Relevance</th></tr></thead>
+<tbody>
+<tr><td><strong>Toyota Motor Mfg Canada</strong></td><td>Automotive assembly</td><td>~8,500 employees. Every vehicle contains dozens of PCBs. Tier 1/2/3 supplier base needs electronics capability.</td></tr>
+<tr><td><strong>ATS Corporation</strong> (TSX: ATA)</td><td>Factory automation systems</td><td>Directly builds automation systems with electronics at core. Natural employer of IPC-certified technicians.</td></tr>
+<tr><td><strong>Eclipse Automation</strong></td><td>Custom manufacturing automation</td><td>~1,000 employees. Electronics is their product.</td></tr>
+<tr><td><strong>Teledyne DALSA</strong></td><td>Electronic imaging, sensors, MEMS, ASICs</td><td>Designs and manufactures electronic components. Core electronics company.</td></tr>
+<tr><td><strong>Honeywell / COM DEV</strong></td><td>Space hardware, satellite components</td><td>Canada's largest designer/manufacturer of space hardware subsystems.</td></tr>
+<tr><td><strong>Christie Digital</strong></td><td>Display / projection systems</td><td>High-end electronic display and projection manufacturing.</td></tr>
+</tbody>
+</table>
+
+<h4>Brantford (73 machinery mfg companies; publishes own industrial directory)</h4>
+
+<table>
+<thead><tr><th>Company</th><th>Sector</th><th>Clark Relevance</th></tr></thead>
+<tbody>
+<tr><td><strong>Ferrero Canada</strong></td><td>Confectionery</td><td>1,300+ employees; largest NA facility. $445M expansion. Extensive electronic controls, robotic packaging.</td></tr>
+<tr><td><strong>Brantco Technologies</strong></td><td>PCB assembly</td><td>IPC training pipeline candidate.</td></tr>
+<tr><td><strong>Aspire Bakeries</strong></td><td>Frozen baked goods</td><td>One of largest in NA. Automated food production.</td></tr>
+</tbody>
+</table>
+
+<h4>Niagara Peninsula</h4>
+
+<table>
+<thead><tr><th>Company</th><th>Location</th><th>Clark Relevance</th></tr></thead>
+<tbody>
+<tr><td><strong>GM Propulsion Plant</strong></td><td>St. Catharines</td><td>Electronics-intensive powertrain manufacturing.</td></tr>
+<tr><td><strong>Bosch Rexroth Canada</strong></td><td>Welland</td><td>~370 employees. Automation/control technology. Natural training customer and anchor partner.</td></tr>
+<tr><td><strong>Vale Canada Refinery</strong></td><td>Port Colborne</td><td>Critical minerals for EV batteries and electronics. Extensive automation and instrumentation.</td></tr>
+<tr><td><strong>Airbus Helicopters Canada</strong></td><td>Fort Erie</td><td>300+ jobs. Sole supplier of composite parts for 8 Airbus helicopter models. Defence-grade aerospace manufacturing.</td></tr>
+<tr><td><strong>Fleet Canada</strong></td><td>Fort Erie</td><td>500,000+ sq ft, 85+ years. Aerospace structures and assemblies.</td></tr>
+</tbody>
+</table>
+
+<h4>Corridor Summary &mdash; By the Numbers</h4>
+
+<table>
+<thead><tr><th>Sub-Region</th><th>D&amp;B Mfg Profiles</th><th>Named Companies</th><th>Key Anchors</th></tr></thead>
+<tbody>
+<tr><td>Hamilton</td><td>820</td><td>~20</td><td>Dofasco, Stelco, National Steel Car, Opto-Electronics</td></tr>
+<tr><td>Stoney Creek / Grimsby</td><td>302</td><td>~3</td><td>Plastics, heat treating, automation</td></tr>
+<tr><td>Burlington</td><td>785</td><td>~7</td><td>Evertz, Cogent Power, GE Aviation</td></tr>
+<tr><td>KW / Cambridge</td><td>1,850+</td><td>~10</td><td>Toyota, ATS, Eclipse, Teledyne DALSA, Honeywell/COM DEV</td></tr>
+<tr><td>Brantford</td><td>73 (machinery only)</td><td>~7</td><td>Ferrero (1,300+), Brantco</td></tr>
+<tr><td>St. Catharines</td><td>306&ndash;332</td><td>~6</td><td>GM Propulsion, Stanpac, Rich Products</td></tr>
+<tr><td>Welland / Thorold</td><td>est. 100+</td><td>~5</td><td>Bosch Rexroth, Welded Tube, Jungbunzlauer</td></tr>
+<tr><td>Port Colborne</td><td>est. 50+</td><td>~3</td><td>Vale Refinery, Washington Mills</td></tr>
+<tr><td>Niagara Falls ON / Fort Erie</td><td>54 + NF</td><td>~7</td><td>Airbus Helicopters, Ophardt</td></tr>
+<tr><td><strong>TOTAL</strong></td><td><strong>~4,300+</strong></td><td><strong>~68</strong></td><td></td></tr>
+</tbody>
+</table>
+
+<p><strong>4,300+ manufacturing establishments across the corridor.</strong> We have named 68 of them. The remaining ~4,200 are the mid-tier and small-company base that would be Clark's actual addressable market.</p>
+
+<hr>
+
+<h3 id="section-2c">2c. Defence, Space, and Satellite Demand</h3>
+
+<p>The corridor's manufacturing inventory exists within a macro demand environment shifting decisively toward defence, space, and satellite systems &mdash; all electronics-intensive at every level of their supply chains.</p>
+
+<h4>Canada's Defence Industrial Strategy (launched February 2026)</h4>
+<ul>
+  <li><strong>Over $500 billion</strong> in defence investment over a decade, "Build-Partner-Buy" framework</li>
+  <li><strong>70% of defence acquisitions</strong> must be awarded to Canadian companies</li>
+  <li><strong>Buy Canadian policy</strong> (in force since December 2025): ~$3.6B in solicitations, $527.9M in contracts</li>
+  <li>Budget 2025: <strong>$81.1B</strong> defence investment</li>
+  <li><strong>NATO 2% target achieved March 2026</strong></li>
+</ul>
+
+<h4>Ontario's Defence Workforce Ambition</h4>
+<p>Ontario has declared a target of tripling its provincial defence workforce from 13,000 to <strong>43,000 by 2035</strong>. This is a 3x workforce ambition with no named training mechanism at the entry level.</p>
+
+<h4>Tariff-Response Retraining</h4>
+<p>The Canada-Ontario Workforce Tariff Response programme: <strong>$228.8 million</strong> to retrain up to 27,000 tariff-hit workers &mdash; steel and automotive named sectors. Steel is Hamilton. Automotive is the corridor from Cambridge to St. Catharines.</p>
+
+<h4>Space and Satellite Systems</h4>
+<p><strong>Honeywell Aerospace Cambridge</strong> (formerly COM DEV) &mdash; Canada's largest designer and manufacturer of space hardware subsystems. Space systems are electronics all the way down. The supply chain requires IPC Class 3 and J-STD-001 Space Addendum certification &mdash; the most demanding and highest-fee IPC certifications.</p>
+
+<h4>AUKUS and the Allied Industrial Base</h4>
+<p>The NTIB agreement treats allied industrial bases as extensions of one another. A Canadian facility with IPC defence/aerospace certification can credibly serve supply chains in the US, UK, and Australia. The corridor's Peace Bridge position makes this practical.</p>
+
+<h4>Impact Across All Four Pillars</h4>
+
+<table>
+<thead><tr><th>Pillar</th><th>Defence/Space Impact</th></tr></thead>
+<tbody>
+<tr><td><strong>Training</strong></td><td>IPC-certified technicians for defence electronics, Space Addendum. Ontario's 30,000 new defence workers need training.</td></tr>
+<tr><td><strong>Assembly</strong></td><td>Small-batch defence electronics, retrofit for military systems, prototype builds. Controlled Goods + ITAR unlock this.</td></tr>
+<tr><td><strong>M&amp;A</strong></td><td>Shops with AS9100D, ITAR, or CG clearance are acquisition targets &mdash; certifications take years to obtain.</td></tr>
+<tr><td><strong>Distribution</strong></td><td>Defence-grade tools, ESD equipment, test instruments. Specialized materials (lead-free solder for space, conformal coatings).</td></tr>
+</tbody>
+</table>
+
+<div class="gap"><strong>GAP:</strong> Controlled Goods Programme registration requirements for Niagara Assembly<br>
+<strong>GAP:</strong> ITAR compliance pathway for Canadian center serving US defence supply chains<br>
+<strong>GAP:</strong> IPC Space Addendum training availability and pricing</div>
+
+<hr>
+
+<h3 id="section-2d">2d. Institutional Landscape</h3>
+
+<h4>Post-Secondary Institutions</h4>
+
+<table>
+<thead><tr><th>Institution</th><th>Location</th><th>Clark Angle</th></tr></thead>
+<tbody>
+<tr><td><strong>McMaster University</strong></td><td>Hamilton</td><td>~10,000 engineering students. Research partnerships. Co-op/capstone placements.</td></tr>
+<tr><td><strong>Mohawk College</strong></td><td>Hamilton</td><td>Most natural Pillar 1 partner. Mid-contraction (~$1.8B Ontario college revenue loss). Complement and alternative.</td></tr>
+<tr><td><strong>Brock University</strong></td><td>St. Catharines</td><td>Peninsula partner. Engineering and applied science.</td></tr>
+<tr><td><strong>Niagara College</strong></td><td>Welland / NOTL</td><td>50&ndash;150 near-graduation students/year for IPC certification.</td></tr>
+<tr><td><strong>University of Waterloo</strong></td><td>Waterloo</td><td>~10,000 engineering co-op students. Structurally aligned with Clark's bench philosophy.</td></tr>
+<tr><td><strong>Conestoga College</strong></td><td>Kitchener</td><td>Strong manufacturing and robotics programs. Same revenue pressures as Mohawk.</td></tr>
+</tbody>
+</table>
+
+<h4>Economic Development and Industry Organizations</h4>
+
+<table>
+<thead><tr><th>Organization</th><th>Clark Angle</th></tr></thead>
+<tbody>
+<tr><td><strong>Invest in Hamilton</strong></td><td>Publishes Bayfront Strategy. Owns Action 42 &mdash; the unstarted action calling for training-and-research space. Clark is a direct answer.</td></tr>
+<tr><td><strong>Niagara Industrial Association</strong></td><td>Member directory is most direct path to peninsula-wide company data.</td></tr>
+<tr><td><strong>Innovation Factory</strong></td><td>Hamilton innovation hub. Conduit for Clark's entry or host for early dialogue events.</td></tr>
+<tr><td><strong>Waterloo EDC</strong></td><td>Markets the region as Canada's 4th-largest manufacturing centre. 1,850+ companies.</td></tr>
+<tr><td><strong>Advantage Brantford</strong></td><td>Publishes industrial directory PDF. Ferrero's $445M expansion is their headline.</td></tr>
+<tr><td><strong>Angel One Investor Network</strong></td><td>Burlington-based &mdash; the only investor network physically inside the corridor.</td></tr>
+</tbody>
+</table>
+
+<h4>Workforce &amp; Training / Government</h4>
+
+<p><strong>EPTAC Markham</strong> &mdash; IMMEDIATE priority relationship. Simultaneously potential partner, competitive benchmark, and potential threat. The relationship must be defined before Niagara Assembly launches Pillar 1.</p>
+
+<p>Key funding channels: Ontario Skills Development Fund, Canada-Ontario Workforce Tariff Response ($228.8M), FedDev Ontario, NRC/IRAP.</p>
+
+<blockquote><strong>What's Missing:</strong> No entity's mandate is to convert strategy into an ecosystem of producers. Each institution owns a piece &mdash; the university owns research, the college owns credentials, economic development owns marketing, the workforce board owns training funding, the city owns the land &mdash; but nobody owns the conversion. That is the gap Clark fills.</blockquote>
+
+<a href="#" class="top-link">Back to top</a>
+
+<!-- ============================================================ -->
+<!-- SECTION 3 -->
+<!-- ============================================================ -->
+
+<h2 id="section-3"><span class="section-num">Section 3</span>Clark's Business Case &mdash; The Methodology Company</h2>
+
+<p>Clark is a light company. It does not operate benches, run training courses, perform assembly, or sell tools. It creates the conditions under which centers do those things &mdash; and it earns revenue from the methodology, software, and advisory services that make the network function.</p>
+
+<h3>What Clark Sells</h3>
+
+<h4>1. Clarkware &mdash; Facility-Aware Operational Software</h4>
+<p>The software layer that makes Clark a clerk, not a consultant. Central loop: log activities as they happen (human, machine, and AI), synthesize them into operational understanding, and report in forms that support trust, quality, and decision-making. The unit of deployment is the IPE &mdash; Intelligent Process Environment &mdash; at workstation level.</p>
+<p>Bundled into center participation. Standalone SaaS for non-center users (pricing TBD).</p>
+
+<h4>2. Methodology Licensing</h4>
+<p>Evidence discipline, training methodology, node progression framework, registry methodology, brand and quality standards.</p>
+<p>Per-center annual licensing fee: <strong>CAD 24,000&ndash;96,000/year</strong> (CAD 2,000&ndash;8,000/month).</p>
+
+<h4>3. Node Onboarding</h4>
+<p>Standing up a new center &mdash; facility assessment, bench design, curriculum licensing, Clarkware deployment.</p>
+<p>One-time fee: <strong>CAD 15,000&ndash;40,000</strong> per new center.</p>
+
+<h4>4. Discovery and Qualification</h4>
+<p>Assessing whether the model fits a region. This is paid work, not free sales.</p>
+<p>Fee per engagement: <strong>CAD 2,500&ndash;7,500</strong>.</p>
+
+<h4>5. Advisory Services &mdash; M&amp;A Strategy</h4>
+<p>Acquisition strategy, target identification, ecosystem composition, deal structure. Clark does not execute M&amp;A &mdash; centers do.</p>
+
+<h4>6. Field Reports and Evidence Publishing</h4>
+<p>Authority-building instrument that generates inbound interest. Revenue initially indirect. Future potential: premium data product for councils, owners, and investors.</p>
+
+<h4>7. Equity Positions</h4>
+<p>Minority equity (target 10%, practical upper band 15&ndash;20%) in centers. Long-term value. Explicitly does not appear in operating-revenue claims.</p>
+
+<h3>Clark's First Proof Case</h3>
+
+<table>
+<thead><tr><th>Revenue Line</th><th>Amount (CAD)</th></tr></thead>
+<tbody>
+<tr><td>Hamilton training contribution (base case)</td><td>~62,536</td></tr>
+<tr><td>One paid discovery engagement</td><td>~5,000</td></tr>
+<tr><td>One node onboarding engagement</td><td>~25,000</td></tr>
+<tr><td>One center on recurring enablement, 12 months @ $3,500/mo</td><td>~42,000</td></tr>
+<tr><td><strong>Illustrative first proof-case contribution</strong></td><td><strong>~134,536</strong></td></tr>
+</tbody>
+</table>
+
+<p>Deliberately not a scale case. Proves Clark can generate revenue from both direct operation and network enablement before any platform maturity exists.</p>
+
+<h3>Scale Scenario (Not a Forecast)</h3>
+
+<table>
+<thead><tr><th>Metric</th><th>5 Centers</th><th>10 Centers</th></tr></thead>
+<tbody>
+<tr><td>Recurring enablement (@ $3,500/mo avg)</td><td>$210,000/yr</td><td>$420,000/yr</td></tr>
+<tr><td>Node onboarding (1&ndash;2 new/yr)</td><td>$25,000&ndash;50,000</td><td>$50,000&ndash;100,000</td></tr>
+<tr><td>Discovery engagements (2&ndash;4/yr)</td><td>$10,000&ndash;30,000</td><td>$20,000&ndash;60,000</td></tr>
+<tr><td>Training contribution (Hamilton direct)</td><td>~$62,500</td><td>~$62,500</td></tr>
+<tr><td><strong>Illustrative annual revenue</strong></td><td><strong>~$307,500&ndash;$352,500</strong></td><td><strong>~$552,500&ndash;$642,500</strong></td></tr>
+</tbody>
+</table>
+
+<blockquote><strong>Honest caveat:</strong> This is a services business at 5 centers and a small platform business at 10. The venture-scale outcome depends on Clarkware becoming a standalone product. The training-and-licensing revenue alone is a viable small business, not a venture-scale return.</blockquote>
+
+<h3>What Clark Must Prove (24-Month Bar)</h3>
+<ol>
+  <li><strong>Repeatable training contribution</strong> &mdash; more than one cohort cycle at or above base case</li>
+  <li><strong>At least one paid node-onboarding</strong> path completed</li>
+  <li><strong>At least one recurring center-support relationship</strong> that survives its first renewal</li>
+  <li><strong>Clarkware pilot</strong> &mdash; one bench, one instrument, real captured evidence</li>
+  <li><strong>At least two published field reports</strong></li>
+  <li><strong>One counterweight confirmed</strong> &mdash; proving the protocol is not an artifact of one city</li>
+</ol>
+
+<a href="#" class="top-link">Back to top</a>
+
+<!-- ============================================================ -->
+<!-- SECTION 4 -->
+<!-- ============================================================ -->
+
+<h2 id="section-4"><span class="section-num">Section 4</span>Niagara Assembly's Business Case</h2>
+
+<p>Niagara Assembly is a Center for Education, Assembly and Investment &mdash; a physical operation with four revenue pillars, a facility, staff, and inventory. Where Clark is light, Niagara Assembly is grounded. Its economics are those of a regional industrial services company, not a software platform.</p>
+
+<h3>Pillar 1 &mdash; Training &amp; Education</h3>
+
+<p>This is the pillar with the most data, the clearest path to revenue, and the role of proving the entire model works. Training is the entry wedge: it generates cash, builds relationships with corridor manufacturers, and creates the workforce pipeline that feeds the other three pillars.</p>
+
+<h4>Demand</h4>
+
+<table>
+<thead><tr><th>Demand Source</th><th>Annual Student-Events</th></tr></thead>
+<tbody>
+<tr><td>Corporate corridor &mdash; new certifications</td><td>~42</td></tr>
+<tr><td>Corporate corridor &mdash; recertifications (2-year cycle)</td><td>~141</td></tr>
+<tr><td>Individual / institutional</td><td>~50&ndash;80</td></tr>
+<tr><td><strong>Total reachable Year 1 (conservative)</strong></td><td><strong>~233&ndash;263</strong></td></tr>
+<tr><td><strong>Total reachable Year 1 (base case)</strong></td><td><strong>~280&ndash;320</strong></td></tr>
+</tbody>
+</table>
+
+<h4>Pricing (at EPTAC Markham rates, competing on geography)</h4>
+
+<table>
+<thead><tr><th>Course</th><th>Per Student (CAD)</th></tr></thead>
+<tbody>
+<tr><td>IPC-A-610 CIS</td><td>$1,150</td></tr>
+<tr><td>IPC-A-610 CIT</td><td>$2,700</td></tr>
+<tr><td>J-STD-001 CIS (hands-on soldering)</td><td>$1,300</td></tr>
+<tr><td>Clark Course (proprietary 2-day module)</td><td>$550</td></tr>
+<tr><td>IPC Space Addendum (J-STD-001 ES)</td><td>$2,800&ndash;$3,500</td></tr>
+<tr><td>CIS Recertification</td><td>$580&ndash;$1,159</td></tr>
+</tbody>
+</table>
+
+<h4>Per-Class Economics (8 students, CIS example)</h4>
+
+<table>
+<thead><tr><th>Item</th><th>Amount (CAD)</th></tr></thead>
+<tbody>
+<tr><td>Gross tuition (8 &times; $1,150)</td><td>$9,200</td></tr>
+<tr><td>IPC exam fees (pass-through)</td><td>&minus;$1,680</td></tr>
+<tr><td>Instructor (3 days &times; $1,600)</td><td>&minus;$4,800</td></tr>
+<tr><td>Materials and consumables</td><td>&minus;$600</td></tr>
+<tr><td><strong>Contribution margin</strong></td><td><strong>$2,120 (~23%)</strong></td></tr>
+</tbody>
+</table>
+
+<h4>Revenue Scenarios</h4>
+
+<table>
+<thead><tr><th>Metric</th><th>Yr 1 Conservative</th><th>Yr 1 Base</th><th>Yr 1 Optimistic</th><th>Yr 2 Base</th></tr></thead>
+<tbody>
+<tr><td>Courses delivered</td><td>14</td><td>22</td><td>34</td><td>40</td></tr>
+<tr><td>Student-events</td><td>112</td><td>176</td><td>306</td><td>330</td></tr>
+<tr><td>Gross training revenue</td><td>$123,200</td><td>$211,200</td><td>$413,100</td><td>$429,000</td></tr>
+<tr><td>Contribution after direct costs</td><td>$55,440</td><td>$95,040</td><td>$185,895</td><td>$205,920</td></tr>
+</tbody>
+</table>
+
+<h4>Phase 1 vs. Phase 2 Operating Model</h4>
+
+<table>
+<thead><tr><th></th><th>Phase 1 (Year 1)</th><th>Phase 2 (Year 2+)</th></tr></thead>
+<tbody>
+<tr><td><strong>Instructor source</strong></td><td>Contract instructors via EPTAC</td><td>NA's own CIT-certified instructors</td></tr>
+<tr><td><strong>Direct cost ratio</strong></td><td>~55% (external rates)</td><td>~45% (internal, amortized curriculum)</td></tr>
+<tr><td><strong>Clark dependency</strong></td><td>High</td><td>Lower</td></tr>
+<tr><td><strong>Contribution margin</strong></td><td>~45% pre-Clark-fees</td><td>~55% pre-Clark-fees</td></tr>
+</tbody>
+</table>
+
+<p><strong>Break-even:</strong> 2 classes per month of 8 students &mdash; achievable within 60 days of launch.</p>
+
+<hr>
+
+<h3>Pillar 2 &mdash; Specialized Small-Batch Assembly</h3>
+
+<p>The same manufacturers who send workers for IPC certification also have production problems: prototype runs too small for Celestica, rework jobs their floor isn't configured for, rush builds their supplier can't schedule.</p>
+
+<h4>Revenue Model</h4>
+
+<table>
+<thead><tr><th>Service</th><th>Typical Job Size</th><th>Indicative Pricing (CAD)</th></tr></thead>
+<tbody>
+<tr><td>Prototype PCB assembly</td><td>5&ndash;25 boards</td><td>$1,500&ndash;$8,000/run</td></tr>
+<tr><td>BGA rework / repair</td><td>Per-board</td><td>$150&ndash;$500/board</td></tr>
+<tr><td>Cable/harness assembly</td><td>10&ndash;50 units</td><td>$2,000&ndash;$12,000/run</td></tr>
+<tr><td>Inspection and QA</td><td>Per-lot</td><td>$500&ndash;$2,500/lot</td></tr>
+<tr><td>Overflow/surge capacity</td><td>Per-shift</td><td>$1,200&ndash;$2,000/operator-day</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead><tr><th>Metric</th><th>Year 1 Conservative</th><th>Year 1 Base</th><th>Year 2 Conservative</th><th>Year 2 Base</th></tr></thead>
+<tbody>
+<tr><td>Assembly jobs</td><td>8&ndash;12</td><td>15&ndash;25</td><td>25&ndash;35</td><td>40&ndash;60</td></tr>
+<tr><td>Avg revenue/job</td><td>$3,000</td><td>$4,000</td><td>$4,000</td><td>$5,000</td></tr>
+<tr><td>Gross revenue</td><td>$24K&ndash;$36K</td><td>$60K&ndash;$100K</td><td>$100K&ndash;$140K</td><td>$200K&ndash;$300K</td></tr>
+<tr><td>Contribution</td><td>$9.6K&ndash;$14.4K</td><td>$27K&ndash;$45K</td><td>$40K&ndash;$63K</td><td>$80K&ndash;$135K</td></tr>
+</tbody>
+</table>
+
+<blockquote><strong>Honest caveat:</strong> These numbers are illustrative &mdash; no customer LOIs exist, no assembly pricing has been validated. The first 3 assembly jobs will either validate or correct the pricing model.</blockquote>
+
+<hr>
+
+<h3>Pillar 3 &mdash; M&amp;A and Ecosystem Investment</h3>
+
+<p>The corridor has ~4,600 manufacturing establishments, many small, aging-owner shops performing specialized work. The 5:1 exit-to-entry ratio means five experienced owners leave for every new entrant. Niagara Assembly acquires or takes positions in small specialized shops, preserves identity and location, and integrates into the center's training pipeline, assembly network, and supply chain.</p>
+
+<p><strong>First acquisition profile (target Year 2&ndash;3):</strong> Revenue $500K&ndash;$1.5M, EBITDA $75K&ndash;$300K, price $200K&ndash;$600K. Funded from operating cash flow + local investment partners.</p>
+
+<blockquote><strong>Honest caveat:</strong> Entirely speculative until the first acquisition closes. The bench-to-acquirer gap requires Pillars 1 and 2 generating enough cash flow and relationship density that targets emerge naturally.</blockquote>
+
+<hr>
+
+<h3>Pillar 4 &mdash; Tools &amp; Materials Distribution</h3>
+
+<p>The pillar that makes the center indispensable to daily operations &mdash; stocked IPC-grade consumables, hand tools, ESD supplies, test equipment, same-day/next-day corridor delivery, and technical support from IPC-trained staff.</p>
+
+<table>
+<thead><tr><th>Metric</th><th>Year 1 Conservative</th><th>Year 1 Base</th><th>Year 2 Conservative</th><th>Year 2 Base</th></tr></thead>
+<tbody>
+<tr><td>Distribution revenue</td><td>$15K&ndash;$25K</td><td>$40K&ndash;$60K</td><td>$60K&ndash;$100K</td><td>$120K&ndash;$180K</td></tr>
+<tr><td>Gross margin</td><td>~30%</td><td>~32%</td><td>~32%</td><td>~35%</td></tr>
+<tr><td>Contribution</td><td>$4.5K&ndash;$7.5K</td><td>$12.8K&ndash;$19.2K</td><td>$19.2K&ndash;$32K</td><td>$42K&ndash;$63K</td></tr>
+</tbody>
+</table>
+
+<p><strong>Tariff advantage:</strong> Corridor manufacturers buying from US distributors face duties, brokerage, and unpredictable delivery. A local supply node with Canadian-sourced or pre-imported inventory eliminates this friction &mdash; not theoretical but a daily frustration for every small shop.</p>
+
+<hr>
+
+<h3>Startup Capital</h3>
+
+<table>
+<thead><tr><th>Item</th><th>Estimate (CAD)</th></tr></thead>
+<tbody>
+<tr><td>Facility lease deposit + first/last</td><td>$6,000&ndash;$15,000</td></tr>
+<tr><td>Bench equipment</td><td>$35,000&ndash;$60,000</td></tr>
+<tr><td>Inspection and test equipment</td><td>$5,000&ndash;$15,000</td></tr>
+<tr><td>Furniture, workstations, ESD flooring</td><td>$5,000&ndash;$10,000</td></tr>
+<tr><td>Training materials and curriculum</td><td>$3,000&ndash;$5,000</td></tr>
+<tr><td>Starter inventory (Pillar 4)</td><td>$15,000&ndash;$30,000</td></tr>
+<tr><td>Legal, entity formation, insurance</td><td>$5,000&ndash;$10,000</td></tr>
+<tr><td>IT infrastructure</td><td>$3,000&ndash;$8,000</td></tr>
+<tr><td>Working capital (3 months)</td><td>$50,000&ndash;$80,000</td></tr>
+<tr><td><strong>Total startup capital</strong></td><td><strong>~$127,000&ndash;$233,000</strong></td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h3>Combined Center Economics</h3>
+
+<h4>Year 1 (base case)</h4>
+
+<table>
+<thead><tr><th>Pillar</th><th>Revenue</th><th>Contribution</th></tr></thead>
+<tbody>
+<tr><td>1. Training &amp; Education</td><td>$211,200</td><td>$95,040</td></tr>
+<tr><td>2. Small-Batch Assembly (partial year)</td><td>$60K&ndash;$100K</td><td>$27K&ndash;$45K</td></tr>
+<tr><td>3. M&amp;A</td><td>$0</td><td>$0</td></tr>
+<tr><td>4. Distribution</td><td>$40K&ndash;$60K</td><td>$12.8K&ndash;$19.2K</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>$311K&ndash;$371K</strong></td><td><strong>$135K&ndash;$159K</strong></td></tr>
+</tbody>
+</table>
+
+<h4>Year 2 (base case)</h4>
+
+<table>
+<thead><tr><th>Pillar</th><th>Revenue</th><th>Contribution</th></tr></thead>
+<tbody>
+<tr><td>1. Training &amp; Education</td><td>$429,000</td><td>$205,920</td></tr>
+<tr><td>2. Small-Batch Assembly</td><td>$200K&ndash;$300K</td><td>$80K&ndash;$135K</td></tr>
+<tr><td>3. M&amp;A</td><td>$0 (pipeline building)</td><td>$0</td></tr>
+<tr><td>4. Distribution</td><td>$120K&ndash;$180K</td><td>$42K&ndash;$63K</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>$749K&ndash;$909K</strong></td><td><strong>$328K&ndash;$404K</strong></td></tr>
+</tbody>
+</table>
+
+<h3>The Cross-Pillar Flywheel</h3>
+
+<pre>TRAINING (Pillar 1)
+  |-- graduates become --> ASSEMBLY workforce (Pillar 2)
+  |-- corporate students reveal --> production gaps --> ASSEMBLY jobs (Pillar 2)
+  |-- every student is a --> DISTRIBUTION customer (Pillar 4)
+  +-- training relationships surface --> aging-owner shops --> M&A pipeline (Pillar 3)
+
+ASSEMBLY (Pillar 2)
+  |-- assembly customers need --> recertification --> TRAINING demand (Pillar 1)
+  |-- assembly jobs consume --> consumables/tools --> DISTRIBUTION revenue (Pillar 4)
+  |-- high-rework-volume shops signal --> M&A targets (Pillar 3)
+  +-- completed jobs demonstrate --> center capability --> more TRAINING enrollments (Pillar 1)
+
+M&A (Pillar 3)
+  |-- acquired shops need --> workforce pipeline --> TRAINING demand (Pillar 1)
+  |-- acquired shops become --> capacity nodes --> ASSEMBLY network (Pillar 2)
+  +-- acquired shops buy --> tools/materials --> DISTRIBUTION accounts (Pillar 4)
+
+DISTRIBUTION (Pillar 4)
+  |-- daily supply contact --> surfaces training needs --> TRAINING referrals (Pillar 1)
+  |-- supply relationships reveal --> who's busy/struggling --> M&A intelligence (Pillar 3)
+  +-- same-day availability --> enables faster turnaround --> ASSEMBLY competitiveness (Pillar 2)</pre>
+
+<h4>The Decomposition Test</h4>
+<ul>
+  <li><strong>Remove Training:</strong> No workforce pipeline. Assembly quality degrades. No corporate relationships to surface M&amp;A candidates. Center becomes a job shop with no credentialing authority.</li>
+  <li><strong>Remove Assembly:</strong> Training has no "what comes next" for graduates. Distribution loses highest-volume accounts. Center becomes a classroom, not an industrial operation.</li>
+  <li><strong>Remove M&amp;A:</strong> Center operates but doesn't grow the ecosystem. Retiring owners' shops still close. Center remains a single node.</li>
+  <li><strong>Remove Distribution:</strong> Every pillar still functions, but customer contact frequency drops from daily/weekly to monthly/quarterly. Most removable in Year 1 &mdash; most valuable by Year 3.</li>
+</ul>
+
+<h3>What Niagara Assembly Must Prove (24-Month Bar)</h3>
+<ol>
+  <li>Training pillar cash-positive &mdash; 6+ consecutive months</li>
+  <li>At least 5 paid assembly jobs</li>
+  <li>At least 3 recurring distribution accounts</li>
+  <li>One M&amp;A candidate identified and profiled</li>
+  <li>Facility operating without subsidy</li>
+  <li>At least one institutional partnership active</li>
+</ol>
+
+<a href="#" class="top-link">Back to top</a>
+
+<!-- ============================================================ -->
+<!-- SECTION 5 -->
+<!-- ============================================================ -->
+
+<h2 id="section-5"><span class="section-num">Section 5</span>The Corridor &mdash; Burlington &rarr; KW &rarr; Brantford &rarr; Fort Erie</h2>
+
+<p>The unit of ecosystem activation has never been a single place. It has always been a corridor &mdash; a geography where knowledge, people, and orders flow between nodes fast enough that Marshall's mechanisms take hold.</p>
+
+<h3>The Shape</h3>
+
+<pre>                    +-- Kitchener-Waterloo-Cambridge
+                    |   (1,850+ mfg companies, 49,300 mfg employees)
+                    |   Toyota, ATS, Eclipse, Teledyne DALSA, Honeywell/COM DEV
+                    |
+BURLINGTON -------- HAMILTON ---- Stoney Creek ---- Grimsby ---- St. Catharines
+(785 mfg)          (820 mfg)     (302 mfg)         (76 mfg)     (306-332 mfg)
+Evertz, Cogent     Dofasco,      Blow mold,         Food,        GM Propulsion,
+GE Aviation,       Stelco,       plastics,          wine         Stanpac,
+Parker Hannifin    Nat'l Steel   automation                      Rich Products
+                   Car, Opto-E                           |
+    |                                                    +-- Thorold (24 mfg)
+    |                                                    |
+    +-- Brantford (73+ mfg)                             +-- Welland (114 mfg)
+        Ferrero (1,300 jobs),                            |   Bosch Rexroth (370),
+        Brantco, Aspire                                  |   Welded Tube, Valbruna
+                                                         |
+                                                         +-- Port Colborne (50+ mfg)
+                                                         |   Vale Refinery,
+                                                         |   Washington Mills
+                                                         |
+                                                         +-- Fort Erie (54 mfg)
+                                                             Airbus Helicopters (300+),
+                                                             Fleet Canada (500K sq ft)
+                                                                 |
+                                                           === PEACE BRIDGE ===
+                                                                 |
+                                                             Buffalo-WNY
+                                                             (~70,000 adv. mfg employees)</pre>
+
+<p><strong>Total corridor (Canadian side): ~4,600 manufacturing establishments. 127 named, ~4,470 unmapped.</strong></p>
+
+<h3>Why Hamilton Is the Hinge</h3>
+
+<p>Hamilton is not the largest manufacturing node (KW has more), not the most electronics-dense (KW again), not the closest to the border (Fort Erie). What Hamilton is, uniquely, is the <strong>hinge</strong>: the point where three natural directions of travel converge.</p>
+
+<ul>
+  <li><strong>Eastward:</strong> Niagara Peninsula &mdash; Stoney Creek, Grimsby, St. Catharines, Welland, Port Colborne, Fort Erie. The primary operating geography.</li>
+  <li><strong>Westward:</strong> Brantford (35 km), then London (GDLS, 1,700 defence workers), St. Thomas (VW PowerCo gigafactory, $7B). Demand context, not operating territory &mdash; yet.</li>
+  <li><strong>Northwestward:</strong> KW-Cambridge (70 km). Most electronics-dense sub-region. Second center location if the protocol proves replicable.</li>
+</ul>
+
+<p>A capability proven in Hamilton has three directions to travel, each backed by distinct industrial demand, each reachable within a 90-minute drive.</p>
+
+<h3>The Border as Feature</h3>
+
+<p>The Niagara River is not a barrier. It is a feature &mdash; two funding systems, two regulatory environments, two labour markets, one physical corridor.</p>
+
+<p><strong>Canadian side:</strong> Ontario SDF, FedDev Ontario, IRAP, Mitacs, Tariff Response ($228.8M), Defence Industrial Strategy ($500B+)</p>
+<p><strong>US side:</strong> Empire State Development, NYSERDA, WIOA, I-Corridor semiconductor initiative, CHIPS Act, DoD programmes</p>
+
+<p><strong>Commercial precedent:</strong> Artaflex (Oakville) opened a Buffalo facility January 2024 &mdash; an established manufacturer independently arriving at the same cross-border corridor logic.</p>
+
+<h3>The Counterweight Question</h3>
+
+<p>The activation protocol requires a second node within 24 months &mdash; one node proves a bench, two nodes prove a protocol.</p>
+
+<table>
+<thead><tr><th>Candidate</th><th>Strengths</th><th>Friction</th><th>What It Proves</th></tr></thead>
+<tbody>
+<tr><td><strong>Buffalo-WNY</strong></td><td>Binational proof, two funding stacks, $88B freight corridor, Artaflex precedent, 70K adv. mfg employees</td><td>Cross-border entity formation, dual insurance, instructor logistics</td><td>Jurisdiction independence &mdash; the most powerful replicability signal</td></tr>
+<tr><td><strong>St. Catharines&ndash;Welland</strong></td><td>Same province, lowest friction, Bosch Rexroth anchor, Brock University</td><td>Only proves intra-Ontario replication</td><td>Speed &mdash; fastest path to a second bench</td></tr>
+<tr><td><strong>Niagara Falls, NY</strong></td><td>Highest need, sharpest contrast</td><td>Thinnest institutional layer, hardest staffing</td><td>Mission &mdash; the protocol works where needed most</td></tr>
+</tbody>
+</table>
+
+<p><strong>Working default:</strong> Buffalo, for the binational proof. But the default stands only until observation contradicts it.</p>
+
+<h3>Corridor Summary Metrics</h3>
+
+<table>
+<thead><tr><th>Metric</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Manufacturing establishments (Canadian side)</td><td>~4,600+</td></tr>
+<tr><td>Named companies profiled</td><td>127</td></tr>
+<tr><td>Manufacturing employees (KW alone)</td><td>49,300</td></tr>
+<tr><td>Advanced manufacturing employees (Buffalo-Niagara)</td><td>~70,000</td></tr>
+<tr><td>Annual freight across Peace Bridge</td><td>$88B+</td></tr>
+<tr><td>Sub-regions with 300+ manufacturing companies</td><td>4</td></tr>
+<tr><td>Publicly traded electronics manufacturers</td><td>2 (Evertz, ATS)</td></tr>
+<tr><td>Aerospace/defence anchors</td><td>4</td></tr>
+<tr><td>Post-secondary institutions</td><td>6</td></tr>
+<tr><td>IPC Licensed Training Centers (Hamilton to Ottawa)</td><td>1 (EPTAC Markham)</td></tr>
+</tbody>
+</table>
+
+<a href="#" class="top-link">Back to top</a>
+
+<!-- ============================================================ -->
+<!-- SECTION 6 -->
+<!-- ============================================================ -->
+
+<h2 id="section-6"><span class="section-num">Section 6</span>Macro Tailwinds &mdash; The Moment</h2>
+
+<p>This is not a normal business environment. The policy assumptions that governed manufacturing for forty years &mdash; open supply chains, cheap Asian production, just-in-time logistics, defence spending as an afterthought &mdash; have all reversed simultaneously. Every figure below is sourced, every programme is launched, every dollar is allocated. The question is no longer whether demand exists for domestic manufacturing capability. The question is who builds the supply side.</p>
+
+<h3>6.1 The Sovereignty Shift</h3>
+
+<p>The word that changed is <em>sovereignty</em>. Not as a political slogan &mdash; as an industrial procurement requirement.</p>
+
+<h4>Canada</h4>
+<ul>
+  <li>Defence Industrial Strategy (Feb 2026): <strong>over $500 billion</strong> over a decade</li>
+  <li><strong>70%</strong> of defence acquisitions to Canadian companies</li>
+  <li>Buy Canadian policy: ~$3.6B in solicitations, $527.9M in contracts</li>
+  <li>Budget 2025: <strong>$81.8 billion</strong> in new defence investments</li>
+  <li>NATO 2% <strong>achieved March 2026</strong></li>
+  <li>Spring 2026: recruit and train <strong>80,000&ndash;100,000 new Red Seal skilled trades workers</strong> by 2030&ndash;31</li>
+</ul>
+
+<h4>United States</h4>
+<ul>
+  <li>CHIPS Act: <strong>$52.7 billion</strong> for semiconductor manufacturing</li>
+  <li>Electronics: <strong>leading reshoring sector at 28%</strong> of all reshoring/FDI jobs (2024)</li>
+  <li><strong>244,000 manufacturing jobs</strong> announced in 2024; <strong>2M+ cumulative</strong> since 2010</li>
+  <li>Tariffs on Chinese electronics: <strong>35&ndash;50%</strong></li>
+  <li><strong>90,000 fab technician shortfall</strong> by 2030</li>
+</ul>
+
+<h4>United Kingdom</h4>
+<ul>
+  <li>Modern Industrial Strategy targeting 2035; freeports: <strong>&pound;6.4 billion</strong> in investment</li>
+  <li>The UK's industrial towns are the original Anglosphere deindustrialization story</li>
+</ul>
+
+<h4>Australia</h4>
+<ul>
+  <li>National Reconstruction Fund: <strong>$15 billion AUD</strong></li>
+  <li>AUKUS Geelong Treaty (50-year) requiring industrial integration at sophistication levels that don't currently exist</li>
+</ul>
+
+<blockquote>Every Anglosphere government is writing cheques for domestic manufacturing capability. None has a mechanism to convert those cheques into ecosystems of producers. The money arrives at the top and looks for a supply side that largely does not exist at the regional level. Clark operates at the level where the money needs to land.</blockquote>
+
+<h3>6.2 The Workforce Emergency</h3>
+
+<ul>
+  <li><strong>3.8 million</strong> new manufacturing employees needed in the US by 2033; ~1.9 million will go unfilled</li>
+  <li><strong>65%</strong> of manufacturers cite talent as their primary business challenge</li>
+  <li><strong>80%</strong> of hardest-to-fill roles are entry/mid-level positions requiring a certificate or diploma</li>
+  <li><strong>General assembler and hand solderer</strong> are the single most difficult production roles to fill (IPC, April 2024)</li>
+  <li>Average age of US skilled trades worker: <strong>over 50</strong></li>
+  <li><strong>5:1 exit-to-entry ratio</strong> &mdash; for every worker entering, five are leaving</li>
+  <li><strong>4.1 million Americans</strong> turning 65 each year (2024&ndash;2027); 11,200 per day</li>
+</ul>
+
+<blockquote><strong>Critical finding:</strong> A larger, stronger skilled workforce would bring back more manufacturing than tariffs. With sufficient workforce, OEMs would reshore <strong>30%</strong> of currently offshored production. With 15% tariffs, only <strong>23%</strong>. The 7-percentage-point advantage of workforce over tariffs is the single strongest data point for Clark's thesis.</blockquote>
+
+<h3>6.3 The Tariff Regime</h3>
+
+<ul>
+  <li>Effective rate on most Chinese electronics: <strong>35%</strong></li>
+  <li>Semiconductors: <strong>50%</strong></li>
+  <li>Electric vehicles: <strong>100%</strong></li>
+  <li>Canada's computer and electronics manufacturing <strong>rose 3%</strong> in 2025 vs. 2024</li>
+  <li><strong>CUSMA duty-free advantage:</strong> Electronics assembled from North American-sourced components ship across the border duty-free</li>
+  <li><strong>$228.8M</strong> Canada-Ontario Workforce Tariff Response for up to 27,000 workers</li>
+  <li><strong>$1B</strong> Regional Tariff Response Initiative + <strong>$1.5B</strong> additional (May 2026)</li>
+  <li><strong>$1B BDC program</strong> + $500M additional RTRI for affected businesses</li>
+</ul>
+
+<h3>6.4 The Defence and Space Demand Wave</h3>
+
+<ul>
+  <li>Defence Industrial Strategy: <strong>125,000 high-paying careers</strong> to be created</li>
+  <li>Defence exports to increase by <strong>50%</strong>; revenues to grow by <strong>240%</strong></li>
+  <li>Defence Skills Agenda: <strong>$383 million</strong> in sectoral workforce investments</li>
+  <li>Ontario target: <strong>43,000 defence jobs</strong> (3x increase from 13,000)</li>
+  <li>NTIB: allied industrial bases as extensions of one another</li>
+</ul>
+
+<h3>6.5 The College Contraction</h3>
+
+<p><strong>Ontario's colleges lost ~$1.8 billion in revenue in 2026.</strong></p>
+
+<ul>
+  <li><strong>600+ programmes</strong> suspended or cancelled</li>
+  <li><strong>~8,000&ndash;10,000 positions</strong> eliminated</li>
+  <li>Projected sector deficit: <strong>up to $1.5 billion by 2027&ndash;28</strong></li>
+  <li><strong>Mohawk College (Hamilton):</strong> $50M shortfall, 200&ndash;400 jobs cut, 16 programmes suspended</li>
+  <li><strong>Fanshawe (London):</strong> Manufacturing Engineering Technician (Co-op) &mdash; <strong>suspended</strong>. Electronics and Embedded Systems &mdash; <strong>suspended</strong>. Projecting deficits of $26.5M &rarr; $50.6M &rarr; $54.1M</li>
+</ul>
+
+<p>A $10,000 bench issuing industry-recognized IPC credentials at $550&ndash;$2,700 per student is not competing with colleges. It is filling the gap their contraction creates.</p>
+
+<h3>6.6 The Production Gap</h3>
+
+<ul>
+  <li>Asia-Pacific produces <strong>85%+</strong> of the world's PCBs; China: 32.8% of global market</li>
+  <li>North America produces roughly <strong>5%</strong> of global PCBs</li>
+  <li>NA EMS market: <strong>$53.2B in 2025</strong>, projected <strong>$97.4B by 2031</strong> (CAGR 10.6%)</li>
+  <li>Fastest-growing EMS subsegment: <strong>high-mix, low-volume</strong> &mdash; exactly Clark's territory</li>
+  <li>Global defence electronics: <strong>$178.3B in 2025</strong>, growing to <strong>$234.5B by 2030</strong></li>
+</ul>
+
+<h3>6.7 Why This Moment</h3>
+
+<table>
+<thead><tr><th>Then (2020)</th><th>Now (2026)</th></tr></thead>
+<tbody>
+<tr><td>"Reshoring would be nice"</td><td>244,000 jobs announced; 2M+ cumulative since 2010</td></tr>
+<tr><td>"We should spend more on defence"</td><td>NATO 2% achieved; $500B+ committed; Buy Canadian in force</td></tr>
+<tr><td>Tariffs as negotiating leverage</td><td>35&ndash;50% structural tariff wall on Chinese electronics</td></tr>
+<tr><td>"Workforce is a challenge"</td><td>1.9M jobs unfillable by 2033; hand solderer hardest to find</td></tr>
+<tr><td>College system as assumed partner</td><td>$1.8B revenue loss; 600+ programmes cut</td></tr>
+<tr><td>AUKUS announced</td><td>50-year Geelong Treaty signed; industrial integration underway</td></tr>
+<tr><td>"Supply chain resilience" as buzzword</td><td>CUSMA rules of origin as structural advantage</td></tr>
+</tbody>
+</table>
+
+<blockquote>The window is not permanent. But right now &mdash; in this specific 24-month window &mdash; the demand is real, the funding is allocated, the competitors are few, and the institutions that would normally fill the gap are contracting. A center that launches now builds into a rising market. A center that waits three years builds into whatever comes after.</blockquote>
+
+<a href="#" class="top-link">Back to top</a>
+
+<!-- ============================================================ -->
+<!-- SECTION 7 -->
+<!-- ============================================================ -->
+
+<h2 id="section-7"><span class="section-num">Section 7</span>Gaps, Risks, and Next Research Tasks</h2>
+
+<p>This section is the business case's own audit. Everything above is built from available data. What follows is an honest inventory of what's missing, what could break, and what must be done next.</p>
+
+<h3>7.1 Critical Gaps &mdash; Must Be Closed Before First Revenue</h3>
+
+<table>
+<thead><tr><th>#</th><th>Gap</th><th>Why Critical</th><th>Path to Close</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>EPTAC/IPC relationship undefined</strong></td><td>Without IPC authorization, Pillar 1 cannot deliver certified courses.</td><td>Direct engagement with EPTAC &mdash; in person. Define licensing terms, instructor pathway, territorial arrangement. <strong>Most time-sensitive action.</strong></td></tr>
+<tr><td>2</td><td><strong>No host facility identified</strong></td><td>No lease, no LOI, no named candidate.</td><td>Hamilton Bayfront survey: 3&ndash;5 candidate spaces (2,000&ndash;3,000 sq ft). Engage Invest in Hamilton.</td></tr>
+<tr><td>3</td><td><strong>No demand validation from a named customer</strong></td><td>Zero manufacturers have expressed willingness to pay.</td><td>Contact Artaflex, Opto-Electronics, Evertz, Bosch Rexroth. One LOI changes everything.</td></tr>
+<tr><td>4</td><td><strong>Legal entity not formed</strong></td><td>Clark and Niagara Assembly are not incorporated.</td><td>Ontario incorporation. IP assignment for Clarkware. Shareholder agreement.</td></tr>
+<tr><td>5</td><td><strong>Founder identity not disclosed</strong></td><td>"No team. No people named."</td><td>Name the founder(s). State relevant background. Decision, not research.</td></tr>
+</tbody>
+</table>
+
+<h3>7.2 High-Priority Gaps</h3>
+
+<table>
+<thead><tr><th>#</th><th>Gap</th><th>Path to Close</th></tr></thead>
+<tbody>
+<tr><td>6</td><td><strong>Controlled Goods Programme</strong></td><td>Research CG requirements. Artaflex holds clearance &mdash; potential model.</td></tr>
+<tr><td>7</td><td><strong>IPC Space Addendum pathway</strong></td><td>Contact IPC for authorization requirements. Premium product ($2,800&ndash;$3,500/student).</td></tr>
+<tr><td>8</td><td><strong>ITAR compliance</strong></td><td>Legal research on exemption scope. Determine if US entity required.</td></tr>
+<tr><td>9</td><td><strong>Assembly pricing validation</strong></td><td>Obtain 3&ndash;5 real quotes from existing providers. Price first 3 jobs against market.</td></tr>
+<tr><td>10</td><td><strong>Distribution supplier agreements</strong></td><td>Contact Kester/Indium/Techspray for reseller terms and margins.</td></tr>
+<tr><td>11</td><td><strong>Institutional partner engagement</strong></td><td>Prioritize: Mohawk College, Invest in Hamilton, NIA.</td></tr>
+<tr><td>12</td><td><strong>Insurance requirements</strong></td><td>2&ndash;3 commercial insurance brokers in Hamilton. Indicative quotes.</td></tr>
+</tbody>
+</table>
+
+<h3>7.3 White Paper Review Issues</h3>
+
+<table>
+<thead><tr><th>#</th><th>Issue</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>The Ask is unfinished</td><td><strong>Still open</strong> &mdash; needs terms, amount, structure</td></tr>
+<tr><td>2</td><td>GDP share vs. absolute output vulnerability</td><td><strong>Open</strong> &mdash; needs reframe</td></tr>
+<tr><td>3</td><td>No team / no customers / no revenue</td><td><strong>Partially addressed</strong></td></tr>
+<tr><td>4</td><td>Five-layer integration unfalsifiable</td><td><strong>Addressed</strong> &mdash; decomposition test in Section 4</td></tr>
+<tr><td>5</td><td>"Single cause" overstated</td><td><strong>Open</strong></td></tr>
+<tr><td>6</td><td>Scale case absent</td><td><strong>Addressed</strong> &mdash; Sections 3 and 4</td></tr>
+<tr><td>10</td><td>M&amp;A layer lacks credible path</td><td><strong>Partially addressed</strong></td></tr>
+<tr><td>11</td><td>Missing comparables (FAME, Tooling U, Foxconn, Germany)</td><td><strong>Open</strong></td></tr>
+<tr><td>12</td><td>Competitive response from EPTAC</td><td><strong>Partially addressed</strong></td></tr>
+</tbody>
+</table>
+
+<h3>7.4 Risks</h3>
+
+<table>
+<thead><tr><th>Risk</th><th>Nature</th><th>Mitigation</th></tr></thead>
+<tbody>
+<tr><td><strong>EPTAC competitive response</strong></td><td>Could replicate bench-level training in Hamilton directly.</td><td>Move first. Four-pillar integration is the moat &mdash; EPTAC won't open an assembly shop or run M&amp;A.</td></tr>
+<tr><td><strong>IPC dependency</strong></td><td>If EPTAC/IPC terminates, Pillar 1 collapses.</td><td>Grow Clark Courses (proprietary, no IPC dependency) as share of training revenue.</td></tr>
+<tr><td><strong>Quality degradation</strong></td><td>Train-the-trainer risks quality decay.</td><td>Evidence discipline: Clarkware makes degradation visible in data before outcomes.</td></tr>
+<tr><td><strong>Venture-scale tension</strong></td><td>At 5&ndash;10 centers: viable small business, not venture return.</td><td>Be honest. Clark may be a profitable, self-funded services company. Not a failure.</td></tr>
+<tr><td><strong>Single-founder risk</strong></td><td>If founder incapacitated, operation stops.</td><td>First hire: operations coordinator who can run Pillar 1 independently.</td></tr>
+<tr><td><strong>Tariff regime change</strong></td><td>Tariff wall could lower.</td><td>Base training business has steady demand regardless. Tariffs are upside, not foundation.</td></tr>
+<tr><td><strong>Foxconn Wisconsin precedent</strong></td><td>Most famous failed reindustrialization promise.</td><td>Clark starts from $135K bench, not $10B factory. Claims register publishes failures.</td></tr>
+</tbody>
+</table>
+
+<h3>7.5 Due Diligence Questions</h3>
+
+<table>
+<thead><tr><th>#</th><th>Question</th><th>Current Answer</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Who is the founder?</td><td>Unnamed</td></tr>
+<tr><td>2</td><td>Legal entity structure?</td><td>Not incorporated</td></tr>
+<tr><td>3</td><td>Specific raise amount and terms?</td><td>Not specified</td></tr>
+<tr><td>4</td><td>Has any manufacturer expressed willingness to pay?</td><td>No</td></tr>
+<tr><td>5</td><td>Has any facility owner expressed willingness to host?</td><td>No</td></tr>
+<tr><td>6</td><td>IP ownership structure for Clarkware?</td><td>Undefined</td></tr>
+<tr><td>7</td><td>IPC training authorization &mdash; signed?</td><td>No</td></tr>
+<tr><td>8</td><td>Quality control if anchor performance degrades?</td><td>Undefined</td></tr>
+<tr><td>9</td><td>Insurance requirements?</td><td>Unquoted</td></tr>
+<tr><td>10</td><td>Has any counterweight-city partner been contacted?</td><td>No</td></tr>
+</tbody>
+</table>
+
+<h3>7.6 The Sequence &mdash; What to Do Next</h3>
+
+<h4>Month 1&ndash;2: Prove the relationships exist</h4>
+<ol>
+  <li>Contact EPTAC &mdash; define the training authorization pathway</li>
+  <li>Contact Artaflex &mdash; propose Clarkware pilot and training partnership</li>
+  <li>Contact Invest in Hamilton &mdash; introduce Clark, reference Action 42</li>
+  <li>Incorporate Clark (Ontario)</li>
+  <li>Name the founder in the document</li>
+</ol>
+
+<h4>Month 3&ndash;4: Prove the facility exists</h4>
+<ol start="6">
+  <li>Identify and visit 3&ndash;5 candidate spaces in Hamilton</li>
+  <li>Obtain insurance quotes</li>
+  <li>Obtain distributor terms for Pillar 4</li>
+  <li>Sign a facility &mdash; lease or LOI</li>
+</ol>
+
+<h4>Month 5&ndash;8: Prove the revenue exists</h4>
+<ol start="10">
+  <li>Deliver first IPC training cohort</li>
+  <li>Complete first paid assembly job</li>
+  <li>Publish Field Report 001 (Hamilton)</li>
+  <li>Deploy Clarkware pilot &mdash; one bench, one instrument, real captured evidence</li>
+</ol>
+
+<h4>Month 9&ndash;12: Prove the protocol exists</h4>
+<ol start="14">
+  <li>Field Report 002 &mdash; counterweight site visit</li>
+  <li>Second and third training cohorts &mdash; prove repeatability</li>
+  <li>Engage Mohawk or Niagara College on institutional partnership</li>
+  <li>Identify first M&amp;A candidate (intelligence, not acquisition)</li>
+</ol>
+
+<h4>Month 13&ndash;24: Prove the model replicates</h4>
+<ol start="18">
+  <li>Launch second center or confirm counterweight location</li>
+  <li>6 consecutive months training break-even at Niagara Assembly</li>
+  <li>Clarkware pilot assessment &mdash; does it deliver operational value?</li>
+  <li>Publish 24-month evidence stack against Sections 3 and 4 proof bars</li>
+</ol>
+
+<hr>
+
+<h3>7.7 What This Business Case Is &mdash; And What It Isn't</h3>
+
+<p><strong>What it demonstrates:</strong></p>
+<ul>
+  <li>Two distinct, coherent business models with defined revenue lines and honest cost structures</li>
+  <li>A real corridor with 4,600+ manufacturing establishments, named anchors, and a structural training gap</li>
+  <li>A macro environment where every Anglosphere government is mandating domestic manufacturing capability</li>
+  <li>A four-pillar center model with a decomposed and tested integration thesis</li>
+  <li>Startup capital ($127K&ndash;$233K) within reach of angel, BDC, or self-funding</li>
+  <li>A 24-month proof bar with named, measurable items &mdash; and a public commitment to record failure</li>
+</ul>
+
+<p><strong>What it does not yet demonstrate:</strong></p>
+<ul>
+  <li>A single paying customer</li>
+  <li>A signed facility</li>
+  <li>A formed legal entity</li>
+  <li>A named founder</li>
+  <li>A completed IPC training authorization</li>
+  <li>A tested Clarkware deployment</li>
+</ul>
+
+<p>The distance between those two lists is the work of the next 12 months. This document is the map. The field reports are the territory.</p>
+
+<a href="#" class="top-link">Back to top</a>
+
+</main>
+
+</body>
+</html>
